@@ -1,7 +1,7 @@
 //! HERE IS THE FADE ANIMATION USED THROUGHOUT THE APPLICATION
 //! IT'S CUSTOM TWEAKED TO MEET MY REQUIREMENTS / NEEDS.
 //! THE LIBRARY ARE LEGACY LIBRARIES, BUT I'M USING THEM ANYWAYS
-
+// ignore_for_file: depend_on_referenced_packages
 import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 

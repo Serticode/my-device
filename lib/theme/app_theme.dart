@@ -13,15 +13,7 @@ class AppTheme {
 
         //! COLOURS
         scaffoldBackgroundColor: AppColours.primaryColour,
-        backgroundColor: AppColours.primaryColour,
         shadowColor: Colors.grey.shade100.withOpacity(0.2),
-
-        //! COLOUR SCHEMES
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-            primary: AppColours.primaryColour,
-            secondary: AppColours.secondaryColour,
-            secondaryContainer: AppColours.containersBackgroundColour,
-            shadow: Colors.grey.shade100.withOpacity(0.2)),
 
         //! SNACK BAR THEME
         snackBarTheme: SnackBarThemeData(
@@ -78,7 +70,14 @@ class AppTheme {
             hintStyle: GoogleFonts.poppins(
                 fontWeight: FontWeight.w500,
                 color: AppColours.lettersAndIconsFaintColour,
-                fontSize: 14.0)));
+                fontSize: 14.0)),
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(
+                primary: AppColours.primaryColour,
+                secondary: AppColours.secondaryColour,
+                secondaryContainer: AppColours.containersBackgroundColour,
+                shadow: Colors.grey.shade100.withOpacity(0.2))
+            .copyWith(background: AppColours.primaryColour));
   }
 }
 

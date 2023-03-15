@@ -239,9 +239,10 @@ class _SertidriveOnboardingScreenState
                                             ElevatedButton(
                                                 onPressed: () {},
                                                 style: ElevatedButton.styleFrom(
-                                                    primary: Theme.of(context)
-                                                        .colorScheme
-                                                        .primary,
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
                                                     textStyle: const TextStyle(
                                                         fontSize: 14.0,
                                                         fontWeight:

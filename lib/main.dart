@@ -24,17 +24,12 @@ Future<void> main() async {
   runApp(ProviderScope(child: RetroPay(showHome: showHome)));
 }
 
-class RetroPay extends ConsumerStatefulWidget {
+class RetroPay extends ConsumerWidget {
   final bool showHome;
   const RetroPay({super.key, required this.showHome});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _RetroPayState();
-}
-
-class _RetroPayState extends ConsumerState<RetroPay> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ScreenUtilInit(
         designSize: const Size(375, 812),
         minTextAdapt: true,
@@ -51,6 +46,8 @@ class _RetroPayState extends ConsumerState<RetroPay> {
                 AppNavigator.generateRoute(routeSettings: settings),
 
             //! SHOW HOME
-            home: Container(color: Colors.blue)));
+            home: showHome
+                ? Container(color: Colors.red)
+                : Container(color: Colors.blue)));
   }
 }
