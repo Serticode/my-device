@@ -56,7 +56,7 @@ class AppTheme {
                 textStyle: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500,
                     color: AppColours.lettersAndIconsColour,
-                    fontSize: 16.0.sp),
+                    fontSize: 13.0.sp),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32.0.r)))),
 

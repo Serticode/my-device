@@ -27,6 +27,9 @@ class OnboardingScreen extends ConsumerWidget {
                 curve: Curves.bounceInOut,
                 animationDuration: 700,
                 globalBackgroundColor: Theme.of(context).colorScheme.primary,
+                isProgressTap: false,
+                isTopSafeArea: true,
+                showNextButton: false,
 
                 //!WHEN PAGES ARE DONE.
                 done: SizedBox(
@@ -42,11 +45,6 @@ class OnboardingScreen extends ConsumerWidget {
                         child: const Text(AppTexts.done))),
                 onDone: () {},
 
-                //!NEXT BUTTON
-                next:
-                    ElevatedButton(onPressed: () {}, child: const Text("Next")),
-                showNextButton: false,
-
                 //!SKIP BUTTON
                 skip: SizedBox(
                     width: double.infinity,
@@ -59,7 +57,6 @@ class OnboardingScreen extends ConsumerWidget {
                               context: context);
                         },
                         child: const Text(AppTexts.skip))),
-                onSkip: () {},
                 showSkipButton: true,
 
                 //!PAGE VIEW INDICATOR

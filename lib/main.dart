@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/router/router.dart';
+import 'package:my_device/screens/home_wrapper.dart';
 import 'package:my_device/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
@@ -46,7 +47,7 @@ class RetroPay extends ConsumerWidget {
 
             //! SHOW HOME
             home: showHome
-                ? Container(color: Colors.blue)
+                ? const OnboardingScreen()
                 : const OnboardingScreen()));
   }
 }
