@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_device/router/routes.dart';
+import 'package:my_device/screens/auth/sign_in/sign_in.dart';
+import 'package:my_device/screens/auth/sign_up/sign_up.dart';
+import 'package:my_device/screens/home_wrapper.dart';
 
 class AppNavigator {
   //! NAVIGATE TO A PAGE WITHOUT REPLACING THE PREVIOUS PAGE.
@@ -14,6 +17,28 @@ class AppNavigator {
 
   static Route<dynamic> generateRoute({required RouteSettings routeSettings}) {
     switch (routeSettings.name) {
+      //! AUTH WRAPPER / HOME WRAPPER
+      case AppRoutes.authWrapperRoute:
+        return _getPageRoute(
+            routeName: routeSettings.name,
+            args: routeSettings.arguments,
+            view: const HomeWrapper());
+
+      //! SIGN IN
+      case AppRoutes.signInRoute:
+        return _getPageRoute(
+            routeName: routeSettings.name,
+            args: routeSettings.arguments,
+            view: const SignIn());
+
+      //! SIGN UP
+      case AppRoutes.signUpRoute:
+        return _getPageRoute(
+            routeName: routeSettings.name,
+            args: routeSettings.arguments,
+            view: const SignUp());
+
+      //! HOME SCREEN
       case AppRoutes.homeScreenRoute:
         return _getPageRoute(
             routeName: routeSettings.name,
@@ -21,6 +46,8 @@ class AppNavigator {
             view: Scaffold(
               body: Container(color: Colors.red),
             ));
+
+      //! DEFAULT
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

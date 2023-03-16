@@ -9,6 +9,7 @@ import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_images.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
+import 'package:my_device/shared/utils/app_fade_animation.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/theme/app_theme.dart';
@@ -32,31 +33,35 @@ class OnboardingScreen extends ConsumerWidget {
                 showNextButton: false,
 
                 //!WHEN PAGES ARE DONE.
-                done: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          AppSettings.setShowHome(showHome: true);
+                done: AppFadeAnimation(
+                    delay: 1.6,
+                    child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              AppSettings.setShowHome(showHome: true);
 
-                          AppNavigator.navigateToReplacementPage(
-                              thePageRouteName: AppRoutes.authWrapperRoute,
-                              context: context);
-                        },
-                        child: const Text(AppTexts.done))),
+                              AppNavigator.navigateToReplacementPage(
+                                  thePageRouteName: AppRoutes.authWrapperRoute,
+                                  context: context);
+                            },
+                            child: const Text(AppTexts.done)))),
                 onDone: () {},
 
                 //!SKIP BUTTON
-                skip: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          AppSettings.setShowHome(showHome: true);
+                skip: AppFadeAnimation(
+                    delay: 1.6,
+                    child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              AppSettings.setShowHome(showHome: true);
 
-                          AppNavigator.navigateToReplacementPage(
-                              thePageRouteName: AppRoutes.authWrapperRoute,
-                              context: context);
-                        },
-                        child: const Text(AppTexts.skip))),
+                              AppNavigator.navigateToReplacementPage(
+                                  thePageRouteName: AppRoutes.authWrapperRoute,
+                                  context: context);
+                            },
+                            child: const Text(AppTexts.skip)))),
                 showSkipButton: true,
 
                 //!PAGE VIEW INDICATOR
@@ -112,6 +117,7 @@ class OnboardingScreen extends ConsumerWidget {
                     //!TEXT
                     const AppTextWidget(
                         theText: AppTexts.onboardingPageOneSubheader,
+                        textColour: AppColours.lettersAndIconsFaintColour,
                         textType: AppTextType.boldBody)
                   ])),
 
@@ -161,6 +167,7 @@ class OnboardingScreen extends ConsumerWidget {
                     //!TEXT
                     const AppTextWidget(
                         theText: AppTexts.onboardingPageTwoSubheader,
+                        textColour: AppColours.lettersAndIconsFaintColour,
                         textType: AppTextType.boldBody)
                   ])),
 
@@ -210,6 +217,7 @@ class OnboardingScreen extends ConsumerWidget {
                     //!TEXT
                     const AppTextWidget(
                         theText: AppTexts.onboardingPageThreeSubheader,
+                        textColour: AppColours.lettersAndIconsFaintColour,
                         textType: AppTextType.boldBody)
                   ]))
         ])));

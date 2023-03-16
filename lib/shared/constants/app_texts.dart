@@ -27,7 +27,7 @@ abstract class AppTexts {
   static const String welcomeBack = "Welcome back!";
   static const String fillDetails = "Kindly fill in these details to log in";
   static const String forgotPass = "Forgot Password?";
-  static const String email = "Email Address";
+  static const String matric = "17/1859";
   static const String password = "Password";
   static const String welcomeToMyDevice = "Welcome to My Device";
   static const String fillForm = "Fill this form to create an account";

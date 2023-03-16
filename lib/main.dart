@@ -8,7 +8,6 @@ import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/register_model_adapters.dart';
 import 'package:my_device/theme/app_theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   //! INITIALIZE WIDGETS BINDING
@@ -29,25 +28,21 @@ class RetroPay extends ConsumerWidget {
   const RetroPay({super.key, required this.showHome});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ScreenUtilInit(
-        designSize: const Size(375, 812),
-        minTextAdapt: true,
-        splitScreenMode: false,
-        builder: (context, child) => MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: AppTexts.appName,
+  Widget build(BuildContext context, WidgetRef ref) => ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: false,
+      builder: (context, child) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: AppTexts.appName,
 
-            //! THEME
-            theme: AppTheme.theTheme,
+          //! THEME
+          theme: AppTheme.instance.theTheme,
 
-            //! NAVIGATION
-            onGenerateRoute: (settings) =>
-                AppNavigator.generateRoute(routeSettings: settings),
+          //! NAVIGATION
+          onGenerateRoute: (settings) =>
+              AppNavigator.generateRoute(routeSettings: settings),
 
-            //! SHOW HOME
-            home: showHome
-                ? const OnboardingScreen()
-                : const OnboardingScreen()));
-  }
+          //! SHOW HOME
+          home: showHome ? const HomeWrapper() : const OnboardingScreen()));
 }
