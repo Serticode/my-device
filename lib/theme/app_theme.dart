@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 
@@ -32,28 +33,32 @@ class AppTheme {
         textTheme: TextTheme(
             displayLarge: GoogleFonts.poppins(
                 fontWeight: FontWeight.w700,
-                fontSize: 38.0,
+                fontSize: 40.0.sp,
                 color: AppColours.lettersAndIconsColour),
             displayMedium: GoogleFonts.poppins(
                 fontWeight: FontWeight.w700,
-                fontSize: 28.0,
+                fontSize: 30.0.sp,
                 color: AppColours.lettersAndIconsColour),
-            bodyMedium: GoogleFonts.poppins(
+            bodyLarge: GoogleFonts.poppins(
                 fontWeight: FontWeight.w500,
                 color: AppColours.lettersAndIconsColour,
-                fontSize: 14.0)),
+                fontSize: 18.0.sp),
+            bodyMedium: GoogleFonts.poppins(
+                fontWeight: FontWeight.w400,
+                color: AppColours.lettersAndIconsColour,
+                fontSize: 14.0.sp)),
 
         //! ELEVATED BUTTON
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-                padding: AppScreenUtils.textFormFieldPadding,
+                padding: AppScreenUtils.elevatedButtonPadding,
                 backgroundColor: AppColours.elevatedButtonBackgroundColour,
                 textStyle: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500,
                     color: AppColours.lettersAndIconsColour,
-                    fontSize: 16.0),
+                    fontSize: 16.0.sp),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21.0)))),
+                    borderRadius: BorderRadius.circular(32.0.r)))),
 
         //! INPUT DECORATION
         inputDecorationTheme: InputDecorationTheme(
@@ -93,4 +98,8 @@ class AppColours {
   static Color elevatedButtonBackgroundColour = const Color(0xFF0B29EF);
   static Color containersBackgroundColour = const Color(0xFF565759);
   static Color snackbarBackgroundColour = const Color(0xFF0B29EF);
+
+  //! BASIC COLOURS
+  static Color appBlue = const Color(0xFF0B29EF);
+  static const Color appWhite = Colors.white;
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-class SertidriveOnboardingScreenImageWidget extends StatelessWidget {
+class OnboardingScreenImageWidget extends StatelessWidget {
   final String theAssetImageURL;
-  const SertidriveOnboardingScreenImageWidget(
-      {Key? key, required this.theAssetImageURL})
+  const OnboardingScreenImageWidget({Key? key, required this.theAssetImageURL})
       : super(key: key);
 
   @override

@@ -6,7 +6,21 @@ abstract class AppTexts {
   static const String naira = '₦';
   // static const String naira = 'NGN ';
 
-  // onboarding
+  //! ONBOARDING
+  static const done = "Done";
+  static const skip = "Skip";
+  static const onboardingPageOneHeader = "Register your devices from anywhere";
+  static const onboardingPageOneSubheader =
+      "Laptop, Fridge, Tabs, From home, In School, Anywhere !";
+
+  static const onboardingPageTwoHeader = "Get confirmed at the hostel.";
+  static const onboardingPageTwoSubheader =
+      "Security personnel's confirm your devices at the hostels S.O.P post!";
+
+  static const onboardingPageThreeHeader = "Report missing devices";
+  static const onboardingPageThreeSubheader =
+      "Report missing devices and let the good community be on the look out for you.\n\nPick your recovered devices at the S.O.P office.";
+
   static const String onboardingDummy =
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem';
   static const String onboardingTitle1 = 'Mobile Banking\nRedefined';

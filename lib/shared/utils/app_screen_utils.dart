@@ -22,7 +22,7 @@ class AppScreenUtils {
   static final EdgeInsets textFormFieldPadding =
       EdgeInsets.symmetric(horizontal: 21.0.w, vertical: 21.0.h);
   static final EdgeInsets elevatedButtonPadding =
-      EdgeInsets.symmetric(horizontal: 18.0.w, vertical: 12.0.h);
+      EdgeInsets.symmetric(horizontal: 32.0.w, vertical: 12.0.h);
 }
 
 //! UI UTILS

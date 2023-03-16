@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class AppOnboardingScreenIconWidget extends StatelessWidget {
+class OnboardingScreenIconWidget extends StatelessWidget {
   final IconData theIcon;
   final Color theIconBGColour;
-  const AppOnboardingScreenIconWidget(
+  const OnboardingScreenIconWidget(
       {Key? key, required this.theIcon, required this.theIconBGColour})
       : super(key: key);
 

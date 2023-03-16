@@ -7,32 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppSettings with ChangeNotifier {
-  //! ONBOARDING SCREEN COUNT.
-  int _onboardingScreenCount = 0;
+  //! CREATE SINGLE INSTANCE
+  AppSettings._();
+  static final _instance = AppSettings._();
 
-  //! LOAD THE SAVED APP & USER PREFERENCES THROUGH THE SETTINGS CONSTRUCTOR.
-  //! THIS HELPS TO RESTORE APP STATE TO PREVIOUS VERSION BEFORE APP WAS CLOSED.
-  AppSettings() {
-    loadPreferences();
-  }
+  //! RETRIEVE INSTANCE
+  static AppSettings get instance => _instance;
 
-  void setOnboardingScreenCount({required int onboardingScreenCount}) {
-    _onboardingScreenCount = onboardingScreenCount;
-    notifyListeners();
-    savePreferences();
-  }
+  //! SHARED PREF INSTANCE
+  static final Future<SharedPreferences> pref = SharedPreferences.getInstance();
 
-  //!SHARED PREFERENCES
-  void savePreferences() async {
-    SharedPreferences userPreference = await SharedPreferences.getInstance();
-    userPreference.setInt("onboardingScreenCount", _onboardingScreenCount);
-  }
+  //! SET SHOW HOME
+  static Future<void> setShowHome({required bool showHome}) async =>
+      await pref.then((value) => value.setBool("showHome", showHome));
 
-  void loadPreferences() async {
-    SharedPreferences userPreference = await SharedPreferences.getInstance();
-    int? onboardingScreenCount =
-        userPreference.getInt("onboardingScreenCount") ?? 0;
-
-    setOnboardingScreenCount(onboardingScreenCount: onboardingScreenCount);
-  }
+  //! GET SHOW HOME
+  static Future<bool?> getShowHome() async =>
+      await pref.then((value) => value.getBool("showHome"));
 }

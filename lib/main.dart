@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/router/router.dart';
+import 'package:my_device/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/register_model_adapters.dart';
 import 'package:my_device/theme/app_theme.dart';
@@ -14,11 +16,8 @@ Future<void> main() async {
   //! INITIALIZE DB AND REGISTER ADAPTERS
   await RegisterAdapters.initializeBDAndRegisterAdapters();
 
-  //! ONBOARDING STARTS HERE - SHARED PREFERENCES FOR ONBOARDING SCREEN
-  SharedPreferences appPreferences = await SharedPreferences.getInstance();
-
   //! CHECK IF ONBOARDING SCREEN HAS BEEN VISITED.
-  final bool showHome = appPreferences.getBool("showHome") ?? false;
+  final bool showHome = await AppSettings.getShowHome() ?? false;
 
   //! APP RUNNING STARTS HERE.
   runApp(ProviderScope(child: RetroPay(showHome: showHome)));
@@ -47,7 +46,7 @@ class RetroPay extends ConsumerWidget {
 
             //! SHOW HOME
             home: showHome
-                ? Container(color: Colors.red)
-                : Container(color: Colors.blue)));
+                ? Container(color: Colors.blue)
+                : const OnboardingScreen()));
   }
 }

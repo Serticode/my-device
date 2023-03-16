@@ -51,6 +51,7 @@ dependencies:
   url_launcher: ^6.1.9
   fpdart: ^0.3.0
   introduction_screen: ^2.1.0
+  connectivity_plus: ^3.0.3
 
 #! DEV DEPENDENCIES
 dev_dependencies:
