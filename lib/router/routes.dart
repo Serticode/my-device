@@ -11,4 +11,7 @@ class AppRoutes {
   //! HOME SCREEN
   static const String homeScreenInitializerRoute = "homeScreenInitializerRoute";
   static const String homeScreenRoute = "homeScreen";
+  static const String homeWrapperRouter = "homeWrapperRoute";
+  static const String viewDevice = "viewDevice";
+  static const String addDevice = "addDevice";
 }

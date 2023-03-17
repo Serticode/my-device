@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/router/router.dart';
-import 'package:my_device/screens/home_wrapper.dart';
+import 'package:my_device/screens/auth/auth_wrapper.dart';
 import 'package:my_device/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
@@ -44,5 +44,5 @@ class RetroPay extends ConsumerWidget {
               AppNavigator.generateRoute(routeSettings: settings),
 
           //! SHOW HOME
-          home: showHome ? const HomeWrapper() : const OnboardingScreen()));
+          home: showHome ? const AuthWrapper() : const OnboardingScreen()));
 }

@@ -25,3 +25,21 @@ enum ConnectivityStatus { wifi, mobile, online, offline }
 
 //! ENUM FOR APP TEXT TYPE
 enum AppTextType { regularBody, boldBody, subtitle, header }
+
+//! DEVICE TYPES
+enum DeviceType {
+  smartPhone,
+  fridge,
+  laptop,
+  fan,
+  monitor,
+  gameConsole,
+  tab,
+  iPad,
+  iphone,
+  iWatch,
+  smartWatch,
+  speaker,
+  smartSpeaker,
+  homePod
+}

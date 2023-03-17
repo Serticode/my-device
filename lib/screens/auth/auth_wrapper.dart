@@ -11,8 +11,8 @@ import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/theme/app_theme.dart';
 
-class HomeWrapper extends ConsumerWidget {
-  const HomeWrapper({super.key});
+class AuthWrapper extends ConsumerWidget {
+  const AuthWrapper({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
@@ -26,6 +26,15 @@ class HomeWrapper extends ConsumerWidget {
                     const AppTextWidget(
                         theText: AppTexts.appName,
                         textType: AppTextType.header),
+
+                    //!  SPACER
+                    AppScreenUtils.verticalSpaceSmall,
+
+                    //! NOTICE
+                    const AppTextWidget(
+                        theText: AppTexts.wrapperNote,
+                        textColour: AppColours.appGreyFaint,
+                        textType: AppTextType.boldBody),
 
                     //! SPACER
                     const Spacer(),
@@ -45,7 +54,7 @@ class HomeWrapper extends ConsumerWidget {
                               Align(
                                   alignment: Alignment.center,
                                   child: CircleAvatar(
-                                      radius: 60.0,
+                                      radius: 45.0,
                                       backgroundColor:
                                           AppColours.containersBackgroundColour,
                                       child: CircleAvatar(
@@ -68,7 +77,7 @@ class HomeWrapper extends ConsumerWidget {
                               Align(
                                   alignment: Alignment.center,
                                   child: CircleAvatar(
-                                      radius: 60.0,
+                                      radius: 45.0,
                                       backgroundColor:
                                           AppColours.containersBackgroundColour,
                                       child: CircleAvatar(
@@ -88,12 +97,6 @@ class HomeWrapper extends ConsumerWidget {
                     //! SPACER
                     const Spacer(),
 
-                    //! NOTICE
-                    const AppTextWidget(
-                        theText: AppTexts.wrapperNote,
-                        textColour: AppColours.lettersAndIconsFaintColour,
-                        textType: AppTextType.boldBody),
-
                     //! SPACER
                     AppScreenUtils.verticalSpaceLarge,
 
@@ -102,7 +105,7 @@ class HomeWrapper extends ConsumerWidget {
                         delay: 1.6,
                         child: SizedBox(
                             width: double.infinity,
-                            height: 60.0.h,
+                            height: 45.0.h,
                             child: ElevatedButton(
                                 onPressed: () {
                                   AppNavigator.navigateToPage(
@@ -111,7 +114,7 @@ class HomeWrapper extends ConsumerWidget {
                                 },
                                 child: const AppTextWidget(
                                     theText: AppTexts.signIn,
-                                    textType: AppTextType.boldBody)))),
+                                    textType: AppTextType.regularBody)))),
 
                     //! SPACER
                     AppScreenUtils.verticalSpaceMedium,
@@ -121,7 +124,7 @@ class HomeWrapper extends ConsumerWidget {
                         delay: 1.8,
                         child: SizedBox(
                             width: double.infinity,
-                            height: 60.0.h,
+                            height: 45.0.h,
                             child: ElevatedButton(
                                 onPressed: () {
                                   AppNavigator.navigateToPage(
@@ -130,7 +133,7 @@ class HomeWrapper extends ConsumerWidget {
                                 },
                                 child: const AppTextWidget(
                                     theText: AppTexts.getStarted,
-                                    textType: AppTextType.boldBody)))),
+                                    textType: AppTextType.regularBody)))),
 
                     //! SPACER
                     AppScreenUtils.verticalSpaceMedium

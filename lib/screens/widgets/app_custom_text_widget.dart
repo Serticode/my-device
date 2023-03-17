@@ -7,7 +7,7 @@ import 'package:my_device/shared/utils/type_defs.dart';
 
 class AppTextWidget extends ConsumerWidget {
   final String theText;
-  final AppTextType textType;
+  final AppTextType? textType;
   final Color? textColour;
   const AppTextWidget(
       {Key? key,
@@ -33,8 +33,13 @@ class AppTextWidget extends ConsumerWidget {
                       .textTheme
                       .bodyLarge
                       ?.copyWith(color: textColour)
-                  : Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: textColour));
+                  : textType == AppTextType.regularBody
+                      ? Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: textColour)
+                      : Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(color: textColour));
 }

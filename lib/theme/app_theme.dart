@@ -40,11 +40,11 @@ class AppTheme {
       textTheme: TextTheme(
           displayLarge: GoogleFonts.poppins(
               fontWeight: FontWeight.w700,
-              fontSize: 40.0.sp,
+              fontSize: 36.0.sp,
               color: AppColours.lettersAndIconsColour),
           displayMedium: GoogleFonts.poppins(
               fontWeight: FontWeight.w700,
-              fontSize: 30.0.sp,
+              fontSize: 28.0.sp,
               color: AppColours.lettersAndIconsColour),
           bodyLarge: GoogleFonts.poppins(
               fontWeight: FontWeight.w500,
@@ -53,7 +53,11 @@ class AppTheme {
           bodyMedium: GoogleFonts.poppins(
               fontWeight: FontWeight.w400,
               color: AppColours.lettersAndIconsColour,
-              fontSize: 14.0.sp)),
+              fontSize: 14.0.sp),
+          bodySmall: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              color: AppColours.lettersAndIconsColour,
+              fontSize: 11.0.sp)),
 
       //! ELEVATED BUTTON
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -61,11 +65,11 @@ class AppTheme {
               padding: AppScreenUtils.elevatedButtonPadding,
               backgroundColor: AppColours.elevatedButtonBackgroundColour,
               textStyle: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   color: AppColours.lettersAndIconsColour,
-                  fontSize: 13.0.sp),
+                  fontSize: 12.0.sp),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0.r)))),
+                  borderRadius: BorderRadius.circular(21.0.r)))),
 
       //! INPUT DECORATION
       inputDecorationTheme: InputDecorationTheme(
@@ -100,7 +104,7 @@ class AppColours {
   static Color secondaryColour = const Color(0xFF1A224C);
   static Color tertiaryColour = Colors.white;
   static Color lettersAndIconsColour = Colors.white;
-  static const Color lettersAndIconsFaintColour = Color(0xFF565759);
+  static const Color lettersAndIconsFaintColour = Color(0xFFE0E0E0);
   static Color focusedTextFormFieldColour = const Color(0xFF0B29EF);
 
   static Color elevatedButtonBackgroundColour = const Color(0xFF0B29EF);
@@ -110,4 +114,8 @@ class AppColours {
   //! BASIC COLOURS
   static Color appBlue = const Color(0xFF0B29EF);
   static const Color appWhite = Colors.white;
+  static const Color appGreyFaint = Color(0xFFE0E0E0);
+  static const Color appGrey = Color(0xFF757575);
+  static Color appRed = Colors.red.shade900;
+  static Color appRedFaint = Colors.red.shade900.withOpacity(0.4);
 }

@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:my_device/router/routes.dart';
 import 'package:my_device/screens/auth/sign_in/sign_in.dart';
 import 'package:my_device/screens/auth/sign_up/sign_up.dart';
-import 'package:my_device/screens/home_wrapper.dart';
+import 'package:my_device/screens/auth/auth_wrapper.dart';
+import 'package:my_device/screens/home/home_wrapper.dart';
+import 'package:my_device/screens/home/widgets/add_device.dart';
+import 'package:my_device/screens/home/widgets/home_screen.dart';
+import 'package:my_device/screens/home/widgets/view_device.dart';
 
 class AppNavigator {
   //! NAVIGATE TO A PAGE WITHOUT REPLACING THE PREVIOUS PAGE.
@@ -22,7 +26,7 @@ class AppNavigator {
         return _getPageRoute(
             routeName: routeSettings.name,
             args: routeSettings.arguments,
-            view: const HomeWrapper());
+            view: const AuthWrapper());
 
       //! SIGN IN
       case AppRoutes.signInRoute:
@@ -39,13 +43,32 @@ class AppNavigator {
             view: const SignUp());
 
       //! HOME SCREEN
+      case AppRoutes.homeWrapperRouter:
+        return _getPageRoute(
+            routeName: routeSettings.name,
+            args: routeSettings.arguments,
+            view: const HomeWrapper());
+
+      //! HOME SCREEN
       case AppRoutes.homeScreenRoute:
         return _getPageRoute(
             routeName: routeSettings.name,
             args: routeSettings.arguments,
-            view: Scaffold(
-              body: Container(color: Colors.red),
-            ));
+            view: const HomeScreen());
+
+      //! ADD DEVICE
+      case AppRoutes.addDevice:
+        return _getPageRoute(
+            routeName: routeSettings.name,
+            args: routeSettings.arguments,
+            view: const AddDevice());
+
+      //! VIEW DEVICE
+      case AppRoutes.viewDevice:
+        return _getPageRoute(
+            routeName: routeSettings.name,
+            args: routeSettings.arguments,
+            view: const ViewDeviceScreen());
 
       //! DEFAULT
       default:

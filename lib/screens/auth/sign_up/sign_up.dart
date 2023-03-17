@@ -54,7 +54,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                     //! NOTICE
                     const AppTextWidget(
                         theText: AppTexts.fillForm,
-                        textType: AppTextType.boldBody,
+                        textType: AppTextType.regularBody,
                         textColour: AppColours.lettersAndIconsFaintColour),
 
                     //! SPACER
@@ -87,7 +87,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                         delay: 1.6,
                         child: SizedBox(
                             width: double.infinity,
-                            height: 65.0.h,
+                            height: 45.0.h,
                             child: ElevatedButton(
                                 onPressed: () {
                                   //! TODO: MAKE API CALLS TO AUTHENTICATE USER.
@@ -100,7 +100,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                                 },
                                 child: const AppTextWidget(
                                     theText: AppTexts.getStarted,
-                                    textType: AppTextType.boldBody)))),
+                                    textType: AppTextType.regularBody)))),
 
                     //! SPACER
                     AppScreenUtils.verticalSpaceLarge,
@@ -121,7 +121,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                                       .textTheme
                                       .bodyMedium!
                                       .copyWith(
-                                          fontSize: 18.0.sp,
+                                          fontSize: 16.0.sp,
                                           color: AppColours
                                               .elevatedButtonBackgroundColour))))
                     ]),

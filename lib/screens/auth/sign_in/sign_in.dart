@@ -54,7 +54,7 @@ class _SignInState extends ConsumerState<SignIn> {
                     //! NOTICE
                     const AppTextWidget(
                         theText: AppTexts.fillDetails,
-                        textType: AppTextType.boldBody,
+                        textType: AppTextType.regularBody,
                         textColour: AppColours.lettersAndIconsFaintColour),
 
                     //! SPACER
@@ -87,7 +87,7 @@ class _SignInState extends ConsumerState<SignIn> {
                         delay: 1.6,
                         child: SizedBox(
                             width: double.infinity,
-                            height: 65.0.h,
+                            height: 45.0.h,
                             child: ElevatedButton(
                                 onPressed: () {
                                   //! TODO: MAKE API CALLS TO AUTHENTICATE USER.
@@ -95,12 +95,12 @@ class _SignInState extends ConsumerState<SignIn> {
 
                                   AppNavigator.navigateToPage(
                                       thePageRouteName:
-                                          AppRoutes.homeScreenInitializerRoute,
+                                          AppRoutes.homeWrapperRouter,
                                       context: context);
                                 },
                                 child: const AppTextWidget(
                                     theText: AppTexts.signIn,
-                                    textType: AppTextType.boldBody)))),
+                                    textType: AppTextType.regularBody)))),
 
                     //! SPACER
                     AppScreenUtils.verticalSpaceLarge,
@@ -121,7 +121,7 @@ class _SignInState extends ConsumerState<SignIn> {
                                       .textTheme
                                       .bodyMedium!
                                       .copyWith(
-                                          fontSize: 18.0.sp,
+                                          fontSize: 16.0.sp,
                                           color: AppColours
                                               .elevatedButtonBackgroundColour))))
                     ]),
