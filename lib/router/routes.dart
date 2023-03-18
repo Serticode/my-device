@@ -14,4 +14,5 @@ class AppRoutes {
   static const String homeWrapperRouter = "homeWrapperRoute";
   static const String viewDevice = "viewDevice";
   static const String addDevice = "addDevice";
+  static const String deletedDevices = "deletedDevices";
 }

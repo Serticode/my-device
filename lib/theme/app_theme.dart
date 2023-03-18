@@ -57,7 +57,7 @@ class AppTheme {
           bodySmall: GoogleFonts.poppins(
               fontWeight: FontWeight.w400,
               color: AppColours.lettersAndIconsColour,
-              fontSize: 11.0.sp)),
+              fontSize: 12.0.sp)),
 
       //! ELEVATED BUTTON
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -118,4 +118,5 @@ class AppColours {
   static const Color appGrey = Color(0xFF757575);
   static Color appRed = Colors.red.shade900;
   static Color appRedFaint = Colors.red.shade900.withOpacity(0.4);
+  static Color appBlack = const Color(0xFF0B0C0F);
 }

@@ -7,6 +7,7 @@ import 'package:my_device/screens/home/home_wrapper.dart';
 import 'package:my_device/screens/home/widgets/add_device.dart';
 import 'package:my_device/screens/home/widgets/home_screen.dart';
 import 'package:my_device/screens/home/widgets/view_device.dart';
+import 'package:my_device/screens/profile/widgets/deleted_devices.dart';
 
 class AppNavigator {
   //! NAVIGATE TO A PAGE WITHOUT REPLACING THE PREVIOUS PAGE.
@@ -69,6 +70,13 @@ class AppNavigator {
             routeName: routeSettings.name,
             args: routeSettings.arguments,
             view: const ViewDeviceScreen());
+
+      //! VIEW DEVICE
+      case AppRoutes.deletedDevices:
+        return _getPageRoute(
+            routeName: routeSettings.name,
+            args: routeSettings.arguments,
+            view: const DeletedDevices());
 
       //! DEFAULT
       default:

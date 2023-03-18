@@ -1,10 +1,54 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/theme/app_theme.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AppUtils {
+//! IMAGE PICKER
+  static Future<File?> pickImage() async {
+    try {
+      //! INITIALIZE PICKER THEN; PICK IMAGE OR TAKE PHOTO
+      final XFile? userImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      File? imageTemp = userImage?.path != null ? File(userImage!.path) : null;
+
+      return imageTemp;
+    } on PlatformException catch (error) {
+      "Failed to pick images: $error".log();
+      return null;
+    }
+  }
+
+  //! SHOW A MODAL BOTTOM SHEET
+  static showAppBottomSheet(
+          {required BuildContext context,
+          required double height,
+          required double width,
+          required Widget child}) =>
+      showBottomSheet(
+          context: context,
+          elevation: 21.0.h,
+          enableDrag: true,
+          constraints:
+              BoxConstraints(maxWidth: width * 0.9, minWidth: width * 0.9),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(21.0.r),
+              side: BorderSide(width: 2.0.sp, color: AppColours.appGreyFaint)),
+          builder: (context) => Container(
+              height: height,
+              width: width * 0.85,
+              margin: EdgeInsets.symmetric(vertical: 6.0.h, horizontal: 6.0.w),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(21.0.r)),
+              child: child));
+
   //! GET DEVICE DEFAULT IMAGE
   static Icon getDeviceIcons({required int index}) {
     switch (DeviceType.values.elementAt(index)) {
@@ -91,28 +135,4 @@ class AppUtils {
         return "Smartphone";
     }
   }
-
-  /* //! SHOW A MODAL BOTTOM SHEET
-  static showAppBottomSheet(
-          {required BuildContext context,
-          required double height,
-          required double width,
-          required Widget child}) =>
-      showBottomSheet(
-          context: context,
-          elevation: 21.0.h,
-          enableDrag: true,
-          constraints:
-              BoxConstraints(maxWidth: width * 0.9, minWidth: width * 0.9),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0.r),
-              side: BorderSide(width: 2.0.sp, color: AppColours.appGreyFaint)),
-          builder: (context) => Container(
-              height: height,
-              width: width * 0.85,
-              margin: EdgeInsets.symmetric(vertical: 6.0.h, horizontal: 6.0.w),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0.r),
-                  color: AppColours.appWhite),
-              child: child)); */
 }

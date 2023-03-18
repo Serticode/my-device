@@ -42,6 +42,7 @@ class HomeScreen extends ConsumerWidget {
                   child: ListView.separated(
                       itemCount:
                           numberOfDevices.value < 1 ? 0 : numberOfDevices.value,
+                      physics: const BouncingScrollPhysics(),
                       separatorBuilder: (context, index) =>
                           const AppDivider(isVertical: false),
                       itemBuilder: (context, index) => Device(

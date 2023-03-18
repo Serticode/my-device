@@ -13,8 +13,12 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
   final int currentPage;
   final void Function() onTap;
+  final bool? isDeletedDevicesScreen;
   const AppBarWidget(
-      {super.key, required this.onTap, required this.currentPage});
+      {super.key,
+      required this.onTap,
+      this.isDeletedDevicesScreen,
+      required this.currentPage});
 
   @override
   Size get preferredSize => Size.fromHeight(75.0.h);
@@ -49,10 +53,13 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
                         const Spacer(),
 
                         //! NOTIFICATION
-                        IconButton(
-                            onPressed: () => onTap(),
-                            icon: const Icon(PhosphorIcons.bellSimpleBold,
-                                color: AppColours.appWhite))
+                        isDeletedDevicesScreen != null &&
+                                isDeletedDevicesScreen == true
+                            ? const SizedBox.shrink()
+                            : IconButton(
+                                onPressed: () => onTap(),
+                                icon: const Icon(PhosphorIcons.bellSimpleBold,
+                                    color: AppColours.appWhite))
                       ])));
   }
 }

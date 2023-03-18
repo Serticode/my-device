@@ -8,7 +8,7 @@ class SignatureText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppTextWidget(
+    return const AppTextWidget(
         theText: "My Device, by Serticode.",
         textType: AppTextType.regularBody,
         textColour: AppColours.lettersAndIconsFaintColour);

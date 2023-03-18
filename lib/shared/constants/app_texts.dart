@@ -35,15 +35,23 @@ abstract class AppTexts {
       "You have not agreed to our Terms and Conditions";
   static const String alreadyHaveAccount = "Already have an account? ";
   static const String dontHaveAccount = "Don't have an account? ";
+  static const String logout = "Logout";
 
   //! HOME SCREEN
   static const greetings = "Hello Samuel 🤗";
   static const goBack = "Go back";
   static const delete = "Delete";
+  static const deletedDevices = "Deleted devices";
   static const modelNumber = "Model number";
   static const serialNumber = "Serial number";
   static const colour = "Device colour";
   static const deviceBrand = "Device brand";
   static const deviceName = "Device name";
   static const saveDevice = "Save device";
+  static const profileOptions = "Profile options";
+  static const aboutUs = "About us.";
+  static const aboutUsNote =
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+  static const reportAProblem = "Report a problem";
+  static const submit = "Submit";
 }

@@ -6,15 +6,11 @@ import 'package:my_device/screens/auth/auth_wrapper.dart';
 import 'package:my_device/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
-import 'package:my_device/shared/utils/register_model_adapters.dart';
 import 'package:my_device/theme/app_theme.dart';
 
 Future<void> main() async {
   //! INITIALIZE WIDGETS BINDING
   WidgetsFlutterBinding.ensureInitialized();
-
-  //! INITIALIZE DB AND REGISTER ADAPTERS
-  await RegisterAdapters.initializeBDAndRegisterAdapters();
 
   //! CHECK IF ONBOARDING SCREEN HAS BEEN VISITED.
   final bool showHome = await AppSettings.getShowHome() ?? false;
