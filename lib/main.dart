@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_device/firebase_options.dart';
 import 'package:my_device/router/router.dart';
 import 'package:my_device/screens/auth/auth_wrapper.dart';
 import 'package:my_device/screens/onboarding_screen/onboarding_screen.dart';
@@ -11,6 +13,8 @@ import 'package:my_device/theme/app_theme.dart';
 Future<void> main() async {
   //! INITIALIZE WIDGETS BINDING
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   //! CHECK IF ONBOARDING SCREEN HAS BEEN VISITED.
   final bool showHome = await AppSettings.getShowHome() ?? false;

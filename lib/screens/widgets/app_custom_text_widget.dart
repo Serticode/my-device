@@ -18,7 +18,7 @@ class AppTextWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Text(theText,
-      textAlign: TextAlign.justify,
+      textAlign: textType == null ? TextAlign.justify : TextAlign.left,
       style: textType == AppTextType.header
           ? Theme.of(context)
               .textTheme

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.my_device">
+    package="com.serticode.mydevice">
    <application
-        android:label="my_device"
+        android:label="My Device"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

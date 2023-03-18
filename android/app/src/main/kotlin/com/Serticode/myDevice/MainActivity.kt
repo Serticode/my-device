@@ -1,4 +1,4 @@
-package com.example.my_device
+package com.serticode.mydevice
 
 import io.flutter.embedding.android.FlutterActivity
 
