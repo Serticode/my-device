@@ -25,7 +25,7 @@ class AuthWrapper extends ConsumerWidget {
                     //! TITLE
                     const AppTextWidget(
                         theText: AppTexts.appName,
-                        textType: AppTextType.header),
+                        textType: AppTextType.subtitle),
 
                     //!  SPACER
                     AppScreenUtils.verticalSpaceSmall,
@@ -34,7 +34,7 @@ class AuthWrapper extends ConsumerWidget {
                     const AppTextWidget(
                         theText: AppTexts.wrapperNote,
                         textColour: AppColours.appGreyFaint,
-                        textType: AppTextType.boldBody),
+                        textType: AppTextType.regularBody),
 
                     //! SPACER
                     const Spacer(),

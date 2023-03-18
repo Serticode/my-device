@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,7 +91,7 @@ class AppUtils {
         return Icon(PhosphorIcons.speakerHighBold,
             color: AppColours.appWhite, size: 26.0.sp);
       case DeviceType.tab:
-        return Icon(PhosphorIcons.tabsFill,
+        return Icon(PhosphorIcons.deviceTabletBold,
             color: AppColours.appWhite, size: 26.0.sp);
       default:
         return Icon(PhosphorIcons.phoneBold,

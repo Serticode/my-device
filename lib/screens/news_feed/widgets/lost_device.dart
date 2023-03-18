@@ -10,15 +10,13 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 //! EACH DEVICE HAS A NAME, MODEL NUMBER, SERIAL NUMBER, COLOUR, TYPE
 //! EACH DEVICE WIDGET WILL SHOW THE DEVICE IMAGE, DEVICE NAME, DEVICE TYPE, AND DEVICE SERIAL NUMBER
 
-class Device extends ConsumerWidget {
+class LostDevice extends ConsumerWidget {
   final void Function() onTap;
-  final void Function() delete;
   final int index;
   final String? deviceImage;
   final bool? canDelete;
-  const Device(
+  const LostDevice(
       {super.key,
-      required this.delete,
       required this.onTap,
       required this.index,
       this.deviceImage,
@@ -36,8 +34,8 @@ class Device extends ConsumerWidget {
             child: Row(children: [
               //! DEVICE IMAGE
               Container(
-                  height: 60.0.h,
-                  width: 55.0.w,
+                  height: 50.0.h,
+                  width: 45.0.w,
                   decoration: BoxDecoration(
                       color: AppColours.appGreyFaint.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(12.0.r),
@@ -87,14 +85,6 @@ class Device extends ConsumerWidget {
 
               //! SPACER
               const Spacer(),
-
-              //! DELETE ICON
-              canDelete != null && canDelete == false
-                  ? const SizedBox.shrink()
-                  : IconButton(
-                      onPressed: () => delete(),
-                      icon: Icon(PhosphorIcons.trashSimpleFill,
-                          size: 16.0.sp, color: AppColours.appWhite))
             ])));
   }
 }

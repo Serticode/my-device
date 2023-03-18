@@ -10,7 +10,6 @@ import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
-import 'package:my_device/theme/app_theme.dart';
 
 class DeletedDevices extends ConsumerWidget {
   const DeletedDevices({super.key});

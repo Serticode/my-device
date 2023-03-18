@@ -8,25 +8,11 @@ import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/theme/app_theme.dart';
 
-class ReportAProblem extends ConsumerStatefulWidget {
-  const ReportAProblem({super.key});
+class LostDeviceOwnerDetails extends ConsumerWidget {
+  const LostDeviceOwnerDetails({super.key});
 
   @override
-  ConsumerState<ReportAProblem> createState() => _ReportAProblemState();
-}
-
-class _ReportAProblemState extends ConsumerState<ReportAProblem> {
-  final ValueNotifier<TextEditingController> textController =
-      ValueNotifier(TextEditingController());
-
-  @override
-  void dispose() {
-    textController.value.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context, WidgetRef ref) => Padding(
       padding: AppScreenUtils.defaultPadding,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         //! BAR
@@ -41,45 +27,45 @@ class _ReportAProblemState extends ConsumerState<ReportAProblem> {
         //! SPACER
         AppScreenUtils.verticalSpaceTiny,
 
-        //! title
+        //! TITLE
         AppTextWidget(
             textColour: AppColours.appBlack,
-            theText: AppTexts.reportAProblem,
+            theText: AppTexts.lostDevice,
             textType: AppTextType.boldBody),
 
         //! SPACER
         AppScreenUtils.verticalSpaceTiny,
 
-        //! MAIN CONTENT
-        Expanded(
-            child: TextFormField(
-                controller: textController.value,
-                textAlign: TextAlign.justify,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: AppColours.appBlack),
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 8.0.h, horizontal: 12.0.w)),
-                maxLines: 10,
-                maxLength: 350)),
+        //! NOTE
+        AppTextWidget(
+            textColour: AppColours.appBlack,
+            theText: AppTexts.lostDeviceNotice,
+            textType: null),
 
         //! SPACER
         AppScreenUtils.verticalSpaceTiny,
 
-        //! SUBMIT
+        //! SPACER
+        const Spacer(),
+
+        //! NOTE
+        AppTextWidget(
+            textColour: AppColours.appBlack,
+            theText: AppTexts.noteToMarkAsFound,
+            textType: null),
+
+        //! SPACER
+        AppScreenUtils.verticalSpaceTiny,
+
+        //! LOG OUT
         AppFadeAnimation(
             delay: 1.6,
             child: SizedBox(
                 width: double.infinity,
                 height: 45.0.h,
                 child: ElevatedButton(
-                    onPressed: () =>
-                        //! TODO: IMPLEMENT REPORT A PROBLEM
-                        Navigator.of(context).pop(),
+                    onPressed: () => Navigator.of(context).pop(),
                     child: const AppTextWidget(
-                        theText: AppTexts.submit,
-                        textType: AppTextType.regularBody))))
+                        theText: AppTexts.markAsFound, textType: null))))
       ]));
 }
