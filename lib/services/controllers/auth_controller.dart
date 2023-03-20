@@ -78,6 +78,31 @@ class AuthController extends StateNotifier<AuthState> {
     return result.isRight();
   }
 
+  Future<bool> login(
+      {required BuildContext context,
+      required String email,
+      required String password}) async {
+    state = state.copiedWithIsLoading(isLoading: true);
+
+    Either<Failure, AuthResult> result = await _authRepository
+        .login(email: email, password: password)
+        .catchError((error) {
+      state = state.copiedWithIsLoading(isLoading: false);
+      error.toString().log();
+    });
+
+    state = state.copiedWithIsLoading(isLoading: false);
+
+    result.fold(
+        (Failure failedMessage) => AppUtils.showBanner(
+            context: context,
+            theMessage: failedMessage.message,
+            theType: NotificationType.failure),
+        (AuthResult result) => result.log());
+
+    return result.isRight();
+  }
+
   //! LOGOUT
   Future<void> logOut() async {
     state = state.copiedWithIsLoading(isLoading: true);

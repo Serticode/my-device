@@ -83,7 +83,7 @@ class AuthRepository {
   }
 
   //! LOGIN IN
-  Future<AuthResult> login({
+  FutureEither<AuthResult> login({
     required String email,
     required String password,
   }) async {
@@ -94,13 +94,15 @@ class AuthRepository {
           .signInWithEmailAndPassword(email: email, password: password);
 
       final Database database = Database(userId: loggedInUser.user?.uid);
-      await database.getUserInfo(loggedInUser: loggedInUser);
+      bool isGetSuccessful = await database.getUserInfo();
 
-      return AuthResult.success;
+      return isGetSuccessful
+          ? right(AuthResult.success)
+          : left(Failure(message: "Failed to login"));
     } on FirebaseAuthException catch (error) {
       error.toString().log();
 
-      return AuthResult.failure;
+      return left(Failure(message: "Failed to login"));
     }
   }
 

@@ -38,7 +38,6 @@ class Database {
 
     try {
       await collectionReference.doc(userId).set(user.toJSON());
-      //await _firestore.collection("Students").doc(userId).update(user.toJSON());
 
       isSuccessful = true;
 
@@ -52,16 +51,15 @@ class Database {
   }
 
   //! GET USER INFO
-  Future<bool> getUserInfo({required UserCredential loggedInUser}) async {
+  Future<bool> getUserInfo() async {
     bool isUserDetailsGotten = false;
-    DocumentSnapshot<Map<String, dynamic>>? userDocument;
+    DocumentSnapshot? userDocument;
+    CollectionReference collectionReference = _firestore.collection("Students");
 
     try {
-      userDocument = await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(userId)
-          .get();
+      userDocument = await collectionReference.doc(userId).get();
 
+      // ignore: unnecessary_null_comparison
       userDocument != null
           ? isUserDetailsGotten = true
           : isUserDetailsGotten = false;
