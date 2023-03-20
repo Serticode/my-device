@@ -11,6 +11,12 @@ typedef FutureEither<SuccessType> = Future<Either<Failure, SuccessType>>;
 //! REGULAR FUTURE THAT RETURNS NOTHING.
 typedef FutureVoid = FutureEither<void>;
 
+//! USER ID
+typedef UserId = String;
+
+//! ENUM FOR CONTROLLER RESULT
+enum IsSuccessful { yes, no }
+
 //! ENUM FOR NOTIFICATION TYPE
 enum NotificationType { success, failure, info }
 

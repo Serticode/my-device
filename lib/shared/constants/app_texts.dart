@@ -36,6 +36,13 @@ abstract class AppTexts {
   static const String alreadyHaveAccount = "Already have an account? ";
   static const String dontHaveAccount = "Don't have an account? ";
   static const String logout = "Logout";
+  static const String firstName = "First name";
+  static const String lastName = "Surname";
+  static const String email = "you@student.babcock.edu.ng";
+  static const String confirmPassword = "Confirm password";
+  static const String department = "Department name in full";
+  static const String hallOfResidence = "Hall of residence";
+  static const String phoneNumber = "Phone number";
 
   //! HOME SCREEN
   static const greetings = "Hello Samuel 🤗";

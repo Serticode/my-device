@@ -20,6 +20,11 @@ class AppNavigator {
           {required String thePageRouteName, required BuildContext context}) =>
       Navigator.of(context).pushReplacementNamed(thePageRouteName);
 
+  static void removeUntilPage(
+          {required String thePageRouteName, required BuildContext context}) =>
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(thePageRouteName, (route) => false);
+
   static Route<dynamic> generateRoute({required RouteSettings routeSettings}) {
     switch (routeSettings.name) {
       //! AUTH WRAPPER / HOME WRAPPER

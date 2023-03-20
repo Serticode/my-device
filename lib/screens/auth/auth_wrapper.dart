@@ -16,6 +16,7 @@ class AuthWrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: Padding(
               padding: AppScreenUtils.defaultPadding,

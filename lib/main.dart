@@ -5,7 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/firebase_options.dart';
 import 'package:my_device/router/router.dart';
 import 'package:my_device/screens/auth/auth_wrapper.dart';
+import 'package:my_device/screens/home/home_wrapper.dart';
 import 'package:my_device/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:my_device/services/controllers/auth_controller.dart';
+import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/theme/app_theme.dart';
@@ -28,21 +31,31 @@ class RetroPay extends ConsumerWidget {
   const RetroPay({super.key, required this.showHome});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: false,
-      builder: (context, child) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: AppTexts.appName,
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: false,
+        builder: (context, child) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: AppTexts.appName,
 
-          //! THEME
-          theme: AppTheme.instance.theTheme,
+            //! THEME
+            theme: AppTheme.instance.theTheme,
 
-          //! NAVIGATION
-          onGenerateRoute: (settings) =>
-              AppNavigator.generateRoute(routeSettings: settings),
+            //! NAVIGATION
+            onGenerateRoute: (settings) =>
+                AppNavigator.generateRoute(routeSettings: settings),
 
-          //! SHOW HOME
-          home: showHome ? const AuthWrapper() : const OnboardingScreen()));
+            //! SHOW HOME
+            home: Consumer(builder: (context, ref, child) {
+              UserModel? user = ref.read(authControllerProvider).user;
+
+              return (showHome && user != null)
+                  ? const HomeWrapper()
+                  : (showHome)
+                      ? const AuthWrapper()
+                      : const OnboardingScreen();
+            })));
+  }
 }

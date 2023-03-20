@@ -85,7 +85,7 @@ class AppTheme {
               borderRadius: BorderRadius.circular(21.0.r)),
           hintStyle: GoogleFonts.poppins(
               fontWeight: FontWeight.w500,
-              color: AppColours.lettersAndIconsFaintColour,
+              color: AppColours.lettersAndIconsFaintColour.withOpacity(0.5),
               fontSize: 14.0.sp)),
 
       //! COLOUR SCHEME
