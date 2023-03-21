@@ -8,19 +8,19 @@ import 'package:my_device/shared/utils/failure.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 
 final Provider<AuthRepository> authRepositoryProvider =
-    Provider((ref) => AuthRepository());
+    Provider((ref) => const AuthRepository());
 
 class AuthRepository {
+  //! CONSTRUCTOR
+  const AuthRepository();
+
   //! USER MATRIC NUMBER IS
   User? get user => FirebaseAuth.instance.currentUser;
   UserId? get userId => user?.uid;
-  UserModel? signedInUser;
+  //UserModel? signedInUser;
   bool get isAlreadyLoggedIn => userId != null;
   String get displayName => user?.displayName ?? "";
   String? get email => user?.email;
-
-  //! CONSTRUCTOR
-  AuthRepository();
 
   //!  SIGN UP
   FutureEither<AuthResult> signUp(
@@ -55,7 +55,7 @@ class AuthRepository {
 
         isUpdateSuccessful
             ? {
-                signedInUser = UserModel.fromJSON({
+                /* signedInUser = UserModel.fromJSON({
                   firstName: firstName,
                   lastName: lastName,
                   matricNumber: matricNumber,
@@ -65,7 +65,7 @@ class AuthRepository {
                   phoneNumber: phoneNumber,
                   password: password,
                   confirmPassword: confirmPassword
-                })
+                }) */
               }
             : {};
 

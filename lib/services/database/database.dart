@@ -25,6 +25,7 @@ class Database {
 
     CollectionReference collectionReference = _firestore.collection("Students");
 
+    //! PAYLOAD
     UserModel user = UserModel()
       ..firstName = firstName
       ..lastName = lastName

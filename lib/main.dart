@@ -8,7 +8,6 @@ import 'package:my_device/screens/auth/auth_wrapper.dart';
 import 'package:my_device/screens/home/home_wrapper.dart';
 import 'package:my_device/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:my_device/services/controllers/auth_controller.dart';
-import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/theme/app_theme.dart';
@@ -49,13 +48,15 @@ class RetroPay extends ConsumerWidget {
 
             //! SHOW HOME
             home: Consumer(builder: (context, ref, child) {
-              UserModel? user = ref.read(authControllerProvider).user;
+              final bool isLoggedIn = ref.watch(isLoggedInProvider);
 
-              return (showHome && user != null)
-                  ? const HomeWrapper()
-                  : (showHome)
-                      ? const AuthWrapper()
-                      : const OnboardingScreen();
+              if (isLoggedIn) {
+                return const HomeWrapper();
+              } else if (showHome) {
+                return const AuthWrapper();
+              } else {
+                return const OnboardingScreen();
+              }
             })));
   }
 }

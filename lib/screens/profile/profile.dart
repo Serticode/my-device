@@ -9,6 +9,7 @@ import 'package:my_device/screens/profile/widgets/profile_item.dart';
 import 'package:my_device/screens/profile/widgets/report_a_problem.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
+import 'package:my_device/services/controllers/auth_controller.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
@@ -149,7 +150,16 @@ class Profile extends ConsumerWidget {
                   width: double.infinity,
                   height: 45.0.h,
                   child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () async {
+                        await ref
+                            .read(authControllerProvider.notifier)
+                            .logOut();
+
+                        // ignore: use_build_context_synchronously
+                        AppNavigator.removeUntilPage(
+                            thePageRouteName: AppRoutes.authWrapperRoute,
+                            context: context);
+                      },
                       child: const AppTextWidget(
                           theText: AppTexts.logout,
                           textType: AppTextType.regularBody))))

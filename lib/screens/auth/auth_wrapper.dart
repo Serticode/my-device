@@ -38,7 +38,7 @@ class AuthWrapper extends ConsumerWidget {
                         textType: AppTextType.regularBody),
 
                     //! SPACER
-                    const Spacer(),
+                    AppScreenUtils.verticalSpaceMedium,
 
                     //! USER & LOGO
                     Container(
@@ -95,11 +95,6 @@ class AuthWrapper extends ConsumerWidget {
 
                     //! SPACER
                     const Spacer(),
-                    //! SPACER
-                    const Spacer(),
-
-                    //! SPACER
-                    AppScreenUtils.verticalSpaceLarge,
 
                     //! BUTTONS
                     AppFadeAnimation(
@@ -118,7 +113,7 @@ class AuthWrapper extends ConsumerWidget {
                                     textType: AppTextType.regularBody)))),
 
                     //! SPACER
-                    AppScreenUtils.verticalSpaceMedium,
+                    AppScreenUtils.verticalSpaceSmall,
 
                     //! SIGN UP.
                     AppFadeAnimation(
@@ -137,6 +132,6 @@ class AuthWrapper extends ConsumerWidget {
                                     textType: AppTextType.regularBody)))),
 
                     //! SPACER
-                    AppScreenUtils.verticalSpaceMedium
+                    AppScreenUtils.verticalSpaceTiny
                   ]))));
 }

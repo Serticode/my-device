@@ -24,6 +24,8 @@ class AnimatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: onTap,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         child: AnimatedContainer(
             duration: const Duration(milliseconds: 700),
             curve: Curves.fastOutSlowIn,

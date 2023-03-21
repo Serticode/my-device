@@ -43,16 +43,13 @@ class _SignInState extends ConsumerState<SignIn> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    //! SPACER
-                    AppScreenUtils.verticalSpaceMedium,
-
                     //! WELCOME TEXT.
                     const AppTextWidget(
                         theText: AppTexts.welcomeBack,
                         textType: AppTextType.subtitle),
 
                     //! SPACER
-                    AppScreenUtils.verticalSpaceSmall,
+                    AppScreenUtils.verticalSpaceTiny,
 
                     //! NOTICE
                     const AppTextWidget(
@@ -133,7 +130,7 @@ class _SignInState extends ConsumerState<SignIn> {
                                                     AppNavigator.removeUntilPage(
                                                         thePageRouteName: AppRoutes
                                                             .homeWrapperRouter,
-                                                        context: context),
+                                                        context: context)
                                                   }
                                                 : {});
                                       }));
