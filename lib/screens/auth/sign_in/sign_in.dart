@@ -12,6 +12,7 @@ import 'package:my_device/shared/utils/app_fade_animation.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/theme/app_theme.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class SignIn extends ConsumerStatefulWidget {
   const SignIn({super.key});
@@ -25,6 +26,8 @@ class _SignInState extends ConsumerState<SignIn> {
       ValueNotifier(TextEditingController());
   final ValueNotifier<TextEditingController> _passwordController =
       ValueNotifier(TextEditingController());
+  //! PASSWORD VISIBILITY
+  final ValueNotifier<bool> isPasswordVisible = ValueNotifier(false);
 
   @override
   void dispose() {
@@ -71,12 +74,22 @@ class _SignInState extends ConsumerState<SignIn> {
                     AppScreenUtils.verticalSpaceSmall,
 
                     //! PASSWORD
-                    TextFormField(
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        cursorColor: AppColours.lettersAndIconsColour,
-                        controller: _passwordController.value,
-                        decoration:
-                            const InputDecoration(hintText: AppTexts.password)),
+                    ValueListenableBuilder(
+                        valueListenable: isPasswordVisible,
+                        child: const SizedBox.shrink(),
+                        builder: (context, value, child) => TextFormField(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            cursorColor: AppColours.lettersAndIconsColour,
+                            controller: _passwordController.value,
+                            obscureText: !isPasswordVisible.value,
+                            decoration: InputDecoration(
+                                hintText: AppTexts.password,
+                                suffixIcon: IconButton(
+                                    onPressed: () => isPasswordVisible.value =
+                                        !isPasswordVisible.value,
+                                    icon: Icon(isPasswordVisible.value
+                                        ? PhosphorIcons.eyeBold
+                                        : PhosphorIcons.eyeSlashBold))))),
 
                     //! SPACER
                     const Spacer(),

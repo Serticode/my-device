@@ -28,9 +28,7 @@ class AuthController extends StateNotifier<AuthState> {
 
   //! UPDATE APP STATE
   void updateAuthStateWithUserDetail({UserId? userId, UserModel? user}) =>
-      state = state.copiedWithCurrentUser(
-        userId: userId!, /* user: user! */
-      );
+      state = state.copiedWithCurrentUser(userId: userId!);
 
   //! REGISTER USER
   Future<bool> registerUser(
