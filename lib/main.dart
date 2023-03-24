@@ -7,7 +7,7 @@ import 'package:my_device/router/router.dart';
 import 'package:my_device/screens/auth/auth_wrapper.dart';
 import 'package:my_device/screens/home/home_wrapper.dart';
 import 'package:my_device/screens/onboarding_screen/onboarding_screen.dart';
-import 'package:my_device/services/controllers/auth_controller.dart';
+import 'package:my_device/services/providers/providers.dart';
 import 'package:my_device/settings/settings.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/theme/app_theme.dart';

@@ -9,7 +9,7 @@ import 'package:my_device/screens/profile/widgets/profile_item.dart';
 import 'package:my_device/screens/profile/widgets/report_a_problem.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
-import 'package:my_device/services/controllers/auth_controller.dart';
+import 'package:my_device/services/providers/providers.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
@@ -38,6 +38,8 @@ class Profile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final loggedInUser = ref.watch(
+        loggedInUserDetailsProvider(ref.read(authControllerProvider).userId!));
     final Size screenSize = MediaQuery.of(context).size;
     return Padding(
         padding: AppScreenUtils.defaultPadding,
@@ -58,8 +60,10 @@ class Profile extends ConsumerWidget {
           AppScreenUtils.verticalSpaceSmall,
 
           //! USER NAME
-          const AppTextWidget(
-              theText: "Akujor Samuel O.", textType: AppTextType.boldBody),
+          AppTextWidget(
+              theText:
+                  "${loggedInUser.value?.lastName} ${loggedInUser.value?.firstName}",
+              textType: AppTextType.boldBody),
 
           //! SPACER
           AppScreenUtils.verticalSpaceTiny,
@@ -69,8 +73,8 @@ class Profile extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const AppTextWidget(
-                    theText: "Software Engineering",
+                AppTextWidget(
+                    theText: "${loggedInUser.value?.department}",
                     textType: AppTextType.regularBody),
 
                 //! SPACER
@@ -87,8 +91,9 @@ class Profile extends ConsumerWidget {
                 //! SPACER
                 AppScreenUtils.horizontalSpaceSmall,
 
-                const AppTextWidget(
-                    theText: "400L", textType: AppTextType.regularBody)
+                AppTextWidget(
+                    theText: "${loggedInUser.value?.matricNumber}",
+                    textType: AppTextType.regularBody)
               ]),
 
           //! SPACER

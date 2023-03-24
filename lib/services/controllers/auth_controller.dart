@@ -4,26 +4,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/services/repositories/auth_repository.dart';
 import 'package:my_device/services/states/auth/auth_state.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/failure.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/shared/utils/utils.dart';
-
-//! AUTH STATE PROVIDER / AUTH CONTROLLER PROVIDER
-final StateNotifierProvider<AuthController, AuthState> authControllerProvider =
-    StateNotifierProvider<AuthController, AuthState>((ref) => AuthController());
-
-//! IS LOGGED IN PROVIDER
-final Provider<bool> isLoggedInProvider = Provider<bool>((ref) {
-  final authState = ref.watch(authControllerProvider);
-  return authState.result == AuthResult.success;
-});
-
-//! USER ID PROVIDER
-final Provider<UserId?> userIdProvider =
-    Provider<UserId?>((ref) => ref.watch(authControllerProvider).userId);
 
 //! AUTH STATE PROVIDER / AUTH CONTROLLER
 class AuthController extends StateNotifier<AuthState> {
@@ -40,8 +27,10 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   //! UPDATE APP STATE
-  void updateAuthStateWithUserDetail({UserId? userId}) =>
-      state = state.copiedWithCurrentUser(userId: userId!);
+  void updateAuthStateWithUserDetail({UserId? userId, UserModel? user}) =>
+      state = state.copiedWithCurrentUser(
+        userId: userId!, /* user: user! */
+      );
 
   //! REGISTER USER
   Future<bool> registerUser(

@@ -7,11 +7,8 @@ class AuthState {
   final bool isLoading;
   final UserId? userId;
 
-  const AuthState({
-    required this.result,
-    required this.isLoading,
-    required this.userId,
-  });
+  const AuthState(
+      {required this.result, required this.isLoading, required this.userId});
 
   //! LOGOUT STATE - IN THIS STATE, THERE IS NO USER
   const AuthState.logOut()

@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
+import 'package:my_device/services/providers/providers.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
+import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
@@ -43,11 +45,19 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
                         AppScreenUtils.horizontalSpaceTiny,
 
                         //! GREETING
-                        const AppFadeAnimation(
-                            delay: 1.6,
-                            child: AppTextWidget(
-                                theText: AppTexts.greetings,
-                                textType: AppTextType.regularBody)),
+                        AppFadeAnimation(
+                            delay: 0.8,
+                            child: Consumer(builder: (context, ref, child) {
+                              final loggedInUser = ref.watch(
+                                  loggedInUserDetailsProvider(ref
+                                      .read(authControllerProvider)
+                                      .userId!));
+
+                              return AppTextWidget(
+                                  theText:
+                                      "${loggedInUser.value?.lastName ?? "User"}; ${AppTexts.greetings}",
+                                  textType: AppTextType.regularBody);
+                            })),
 
                         //! SPACER
                         const Spacer(),

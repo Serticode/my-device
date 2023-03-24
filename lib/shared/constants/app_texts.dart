@@ -1,4 +1,5 @@
 abstract class AppTexts {
+  const AppTexts._();
   // app name
   static const String appName = "My Device";
 
@@ -45,7 +46,8 @@ abstract class AppTexts {
   static const String phoneNumber = "Phone number";
 
   //! HOME SCREEN
-  static const greetings = "Hello Samuel 🤗";
+  static const isLoading = "Loading ...";
+  static const greetings = "Hello 🤗";
   static const goBack = "Go back";
   static const delete = "Delete";
   static const deletedDevices = "Deleted devices";

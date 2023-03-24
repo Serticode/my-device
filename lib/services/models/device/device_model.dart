@@ -1,6 +1,4 @@
-//! THIS FILE HANDLES THE USER MODEL IN IT"S FULL GLORY.
-//! TO GENERATE NEW HIVE ADAPTER, RUN THE BELOW COMMAND.
-//! - flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
+//! THIS FILE HANDLES THE DEVICE MODEL IN IT"S FULL GLORY.
 import 'package:my_device/shared/utils/type_defs.dart';
 
 class DeviceModel {
