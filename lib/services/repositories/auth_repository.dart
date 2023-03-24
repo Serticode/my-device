@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:my_device/services/database/database.dart';
+import 'package:my_device/services/database/user/database.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/failure.dart';
 import 'package:my_device/shared/utils/type_defs.dart';

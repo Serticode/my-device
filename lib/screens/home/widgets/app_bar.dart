@@ -5,7 +5,6 @@ import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
 import 'package:my_device/services/providers/providers.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
-import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_device/services/models/auth/user_model/user_model.dart';
+import 'package:my_device/services/models/firebase/firebase_collection_names.dart';
 import 'package:my_device/services/models/firebase/firebase_user_field_name.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
@@ -7,7 +8,7 @@ import 'package:my_device/shared/utils/type_defs.dart';
 class Database {
   const Database();
   static final CollectionReference studentCollection =
-      FirebaseFirestore.instance.collection("Students");
+      FirebaseFirestore.instance.collection(FirebaseCollectionName.students);
 
   //! UPDATE USER INFO
   Future<bool> saveUserInfo(

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_device/services/controllers/auth_controller.dart';
@@ -7,7 +6,6 @@ import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/services/models/firebase/firebase_collection_names.dart';
 import 'package:my_device/services/models/firebase/firebase_user_field_name.dart';
 import 'package:my_device/services/states/auth/auth_state.dart';
-import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 
 //! AUTH STATE PROVIDER / AUTH CONTROLLER PROVIDER
