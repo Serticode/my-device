@@ -22,12 +22,12 @@ Future<void> main() async {
   final bool showHome = await AppSettings.getShowHome() ?? false;
 
   //! APP RUNNING STARTS HERE.
-  runApp(ProviderScope(child: RetroPay(showHome: showHome)));
+  runApp(ProviderScope(child: MyDevice(showHome: showHome)));
 }
 
-class RetroPay extends ConsumerWidget {
+class MyDevice extends ConsumerWidget {
   final bool showHome;
-  const RetroPay({super.key, required this.showHome});
+  const MyDevice({super.key, required this.showHome});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
