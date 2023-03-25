@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
+import 'package:my_device/services/models/device/device_model.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/shared/utils/utils.dart';
@@ -13,15 +14,13 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 class Device extends ConsumerWidget {
   final void Function() onTap;
   final void Function() delete;
-  final int index;
-  final String? deviceImage;
   final bool? canDelete;
+  final DeviceModel device;
   const Device(
       {super.key,
       required this.delete,
       required this.onTap,
-      required this.index,
-      this.deviceImage,
+      required this.device,
       this.canDelete});
 
   @override
@@ -43,8 +42,11 @@ class Device extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(12.0.r),
                       border: Border.all(
                           width: 1.2, color: AppColours.appGreyFaint)),
-                  child: deviceImage == null
-                      ? AppUtils.getDeviceIcons(index: index)
+                  child: device.deviceImages == null ||
+                          device.deviceImages!.isEmpty
+                      ? AppUtils.getDeviceIcons(
+                          index: DeviceType.values.indexWhere(
+                              (element) => element.name == device.deviceType))
                       : Image.asset("")),
 
               //! SPACER
@@ -53,8 +55,8 @@ class Device extends ConsumerWidget {
               //! DEVICE NAME, SERIAL NUMBER, AND TYPE
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 //! DEVICE NAME
-                const AppTextWidget(
-                    theText: "iPhone 13 Pro max",
+                AppTextWidget(
+                    theText: device.deviceName!,
                     textType: AppTextType.regularBody),
 
                 //! SPACER
@@ -71,9 +73,10 @@ class Device extends ConsumerWidget {
                     //! SPACER
                     AppScreenUtils.horizontalSpaceTiny,
 
-                    //! TEXT
+                    //! DEVICE TYPE
                     AppTextWidget(
-                        theText: DeviceType.values.elementAt(index).name,
+                        theText: device.deviceType ??
+                            DeviceType.values.elementAt(0).name,
                         textType: null)
                   ]),
 
@@ -81,7 +84,7 @@ class Device extends ConsumerWidget {
                   AppScreenUtils.horizontalSpaceSmall,
 
                   //! SERIAL NUMBER.
-                  const AppTextWidget(theText: "AON344567", textType: null)
+                  AppTextWidget(theText: device.serialNumber!, textType: null)
                 ])
               ]),
 

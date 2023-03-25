@@ -1,11 +1,9 @@
 import "package:flutter/foundation.dart" show immutable;
-import "package:my_device/shared/utils/type_defs.dart";
 
 @immutable
 class FirebaseDeviceFieldName {
   static const String ownerId = "ownerId";
-  static const String deviceId = "deviceId";
-  static const String createdAt = "created_at";
+  static const String createdAt = "createdAt";
   static const String date = "date";
   static const String deviceName = "deviceName";
   static const String deviceType = "deviceType";

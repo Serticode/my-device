@@ -1,37 +1,36 @@
 //! THIS FILE HANDLES THE DEVICE MODEL IN IT"S FULL GLORY.
 import 'dart:collection';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_device/services/models/firebase/firebase_device_field_name.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 
 class DeviceModel extends MapView<String, dynamic> {
   //! DEFINITIONS
   late String? ownerId;
-  late String? deviceId;
   late String? deviceName;
-  late DeviceType? deviceType;
+  late String? deviceType;
   late String? serialNumber;
   late String? modelNumber;
   late String? brand;
   late bool? isLost;
   late String? deviceColour;
-  late List<String>? deviceImages;
+  late List? deviceImages;
+  late DateTime? createdAt;
 
   //! CONSTRUCTOR
-  DeviceModel({
-    this.ownerId,
-    this.deviceId,
-    this.deviceName,
-    this.deviceType,
-    this.serialNumber,
-    this.modelNumber,
-    this.brand,
-    this.isLost,
-    this.deviceColour,
-    this.deviceImages,
-  }) : super({
+  DeviceModel(
+      {this.ownerId,
+      this.deviceName,
+      this.deviceType,
+      this.serialNumber,
+      this.modelNumber,
+      this.brand,
+      this.isLost,
+      this.deviceColour,
+      this.deviceImages,
+      this.createdAt})
+      : super({
           FirebaseDeviceFieldName.ownerId: ownerId,
-          FirebaseDeviceFieldName.deviceId: deviceId,
           FirebaseDeviceFieldName.deviceName: deviceName,
           FirebaseDeviceFieldName.deviceType: deviceType,
           FirebaseDeviceFieldName.serialNumber: serialNumber,
@@ -40,6 +39,7 @@ class DeviceModel extends MapView<String, dynamic> {
           FirebaseDeviceFieldName.isLost: isLost,
           FirebaseDeviceFieldName.deviceColour: deviceColour,
           FirebaseDeviceFieldName.deviceImages: deviceImages,
+          FirebaseDeviceFieldName.createdAt: createdAt
         });
 
   //! FROM JSON
@@ -48,7 +48,6 @@ class DeviceModel extends MapView<String, dynamic> {
     required UserId ownerId,
   }) : this(
           ownerId: ownerId,
-          deviceId: json[FirebaseDeviceFieldName.deviceId] ?? "",
           deviceName: json[FirebaseDeviceFieldName.deviceName] ?? "",
           deviceType: json[FirebaseDeviceFieldName.deviceType] ?? "",
           serialNumber: json[FirebaseDeviceFieldName.serialNumber] ?? "",
@@ -56,7 +55,9 @@ class DeviceModel extends MapView<String, dynamic> {
           brand: json[FirebaseDeviceFieldName.brand] ?? "",
           isLost: json[FirebaseDeviceFieldName.isLost] ?? "",
           deviceColour: json[FirebaseDeviceFieldName.deviceColour] ?? "",
-          deviceImages: json[FirebaseDeviceFieldName.deviceImages] ?? "",
+          deviceImages: json[FirebaseDeviceFieldName.deviceImages] ?? [],
+          createdAt:
+              (json[FirebaseDeviceFieldName.createdAt] as Timestamp).toDate(),
         );
 
   @override
@@ -65,7 +66,6 @@ class DeviceModel extends MapView<String, dynamic> {
       other is DeviceModel &&
           runtimeType == other.runtimeType &&
           ownerId == other.ownerId &&
-          deviceId == other.deviceId &&
           deviceName == other.deviceName &&
           deviceType == other.deviceType &&
           serialNumber == other.serialNumber &&
@@ -73,12 +73,12 @@ class DeviceModel extends MapView<String, dynamic> {
           brand == other.brand &&
           isLost == other.isLost &&
           deviceColour == other.deviceColour &&
-          deviceImages == other.deviceImages;
+          deviceImages == other.deviceImages &&
+          createdAt == other.createdAt;
 
   @override
   int get hashCode => Object.hashAll([
         ownerId,
-        deviceId,
         deviceName,
         deviceType,
         serialNumber,
@@ -87,5 +87,6 @@ class DeviceModel extends MapView<String, dynamic> {
         isLost,
         deviceColour,
         deviceImages,
+        createdAt
       ]);
 }

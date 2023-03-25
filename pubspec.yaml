@@ -85,3 +85,7 @@ flutter:
     - lib/assets/images/
     - lib/assets/
     - lib/assets/icons/
+    - lib/assets/animations/empty.json
+    - lib/assets/animations/loading.json
+    - lib/assets/animations/data_not_found.json
+    - lib/assets/animations/small_error.json

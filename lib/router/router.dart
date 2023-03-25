@@ -70,13 +70,6 @@ class AppNavigator {
             view: const AddDevice());
 
       //! VIEW DEVICE
-      case AppRoutes.viewDevice:
-        return _getPageRoute(
-            routeName: routeSettings.name,
-            args: routeSettings.arguments,
-            view: const ViewDeviceScreen());
-
-      //! VIEW DEVICE
       case AppRoutes.deletedDevices:
         return _getPageRoute(
             routeName: routeSettings.name,

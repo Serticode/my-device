@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
+import 'package:my_device/services/models/device/device_model.dart';
+import 'package:my_device/services/providers/user_devices_controller/user_devices_controller_provider.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
@@ -13,11 +15,9 @@ import 'package:my_device/theme/app_theme.dart';
 class ViewDeviceScreen extends ConsumerWidget {
   final String? deviceImage;
   final int? index;
-  const ViewDeviceScreen({
-    super.key,
-    this.index,
-    this.deviceImage,
-  });
+  final DeviceModel device;
+  const ViewDeviceScreen(
+      {super.key, this.index, this.deviceImage, required this.device});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,21 +46,24 @@ class ViewDeviceScreen extends ConsumerWidget {
                                 color: AppColours.appGreyFaint.withOpacity(0.4),
                                 width: 2.0.sp),
                             borderRadius: BorderRadius.circular(25.0.r)),
-                        child: deviceImage == null
+                        child: device.deviceImages == null ||
+                                device.deviceImages!.isEmpty
                             ? Transform.scale(
-                                scale: 2.0.sp,
-                                child:
-                                    AppUtils.getDeviceIcons(index: index ?? 0))
+                                scale: 2.0,
+                                child: AppUtils.getDeviceIcons(
+                                    index: DeviceType.values.indexWhere(
+                                        (element) =>
+                                            element.name == device.deviceType)))
                             : Image.asset("")),
 
                     //! SPACER
                     AppScreenUtils.verticalSpaceTiny,
 
                     //! DEVICE NAME
-                    const AppFadeAnimation(
+                    AppFadeAnimation(
                         delay: 1.6,
                         child: AppTextWidget(
-                            theText: "Device Name",
+                            theText: device.deviceName ?? "Device",
                             textType: AppTextType.subtitle)),
 
                     //! SPACER
@@ -86,36 +89,45 @@ class ViewDeviceScreen extends ConsumerWidget {
                                   DeviceDetail(
                                       label: "Device type",
                                       value: AppUtils.getDeviceType(
-                                          index: index ?? 0)),
+                                          index: DeviceType.values.indexWhere(
+                                              (element) =>
+                                                  element.name ==
+                                                  device.deviceType))),
 
                                   //! SPACER
                                   AppScreenUtils.verticalSpaceSmall,
 
                                   //! DEVICE MODEL NUMBER
-                                  const DeviceDetail(
-                                      label: "Model number", value: "A9304"),
+                                  DeviceDetail(
+                                      label: "Model number",
+                                      value: device.modelNumber ??
+                                          "No registered model number"),
 
                                   //! SPACER
                                   AppScreenUtils.verticalSpaceSmall,
 
                                   //! DEVICE SERIAL NUMBER
-                                  const DeviceDetail(
+                                  DeviceDetail(
                                       label: "Serial number",
-                                      value: "A0N23477YH"),
+                                      value: device.serialNumber ??
+                                          "No registered serial number"),
 
                                   //! SPACER
                                   AppScreenUtils.verticalSpaceSmall,
 
                                   //! DEVICE COLOUR
-                                  const DeviceDetail(
-                                      label: "Device colour", value: "Black"),
+                                  DeviceDetail(
+                                      label: "Device colour",
+                                      value: device.deviceColour ??
+                                          "None submitted"),
 
                                   //! SPACER
                                   AppScreenUtils.verticalSpaceSmall,
 
                                   //! DEVICE BRAND
-                                  const DeviceDetail(
-                                      label: "Device brand", value: "Apple"),
+                                  DeviceDetail(
+                                      label: "Device brand",
+                                      value: device.brand ?? "None registered"),
                                 ]))),
 
                     //! SPACER
@@ -130,12 +142,36 @@ class ViewDeviceScreen extends ConsumerWidget {
                                   width: double.infinity,
                                   height: 45.0.h,
                                   child: ElevatedButton(
-                                      onPressed: () => {
-                                            "Delete device from View Device screen"
-                                                .log(),
+                                      onPressed: () async {
+                                        "Delete device from View Device screen"
+                                            .log();
 
-                                            //! TODO: MAKE API CALLS TO AUTHENTICATE USER.
-                                          },
+                                        await ref
+                                            .read(deviceControllerProvider
+                                                .notifier)
+                                            .deleteDevice(
+                                                serialNumber:
+                                                    device.serialNumber)
+                                            .then(
+                                                (value) async => value.isRight()
+                                                    ? {
+                                                        AppUtils.showBanner(
+                                                            context: context,
+                                                            theMessage:
+                                                                "Device deleted successfully",
+                                                            theType:
+                                                                NotificationType
+                                                                    .success),
+                                                        await Future.delayed(
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    2100)),
+                                                        Navigator.of(context)
+                                                            .pop()
+                                                      }
+                                                    : {})
+                                            .catchError((error) => error.log());
+                                      },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: AppColours
                                               .appGreyFaint

@@ -14,8 +14,8 @@ typedef FutureVoid = FutureEither<void>;
 //! USER ID
 typedef UserId = String;
 
-//! ENUM FOR CONTROLLER RESULT
-enum IsSuccessful { yes, no }
+//! IS LOADING
+typedef IsLoading = bool;
 
 //! ENUM FOR NOTIFICATION TYPE
 enum NotificationType { success, failure, info }
@@ -31,6 +31,12 @@ enum ConnectivityStatus { wifi, mobile, online, offline }
 
 //! ENUM FOR APP TEXT TYPE
 enum AppTextType { regularBody, boldBody, subtitle, header }
+
+//! ENUM FOR CONTROLLER RESULT
+enum IsSuccessful { yes, no }
+
+//! DATE SORTING
+enum DateSorting { newestOnTop, oldestOnTop }
 
 //! DEVICE TYPES
 enum DeviceType {
@@ -48,4 +54,15 @@ enum DeviceType {
   speaker,
   smartSpeaker,
   homePod
+}
+
+//! LOTTIE ANIMATION
+enum LottieAnimation {
+  noData(name: 'data_not_found'),
+  dataIsEmpty(name: 'empty'),
+  loading(name: 'loading'),
+  smallError(name: 'small_error');
+
+  final String name;
+  const LottieAnimation({required this.name});
 }

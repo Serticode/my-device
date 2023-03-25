@@ -4,6 +4,7 @@ import "package:flutter/foundation.dart";
 class FirebaseCollectionName {
   static const securityAgents = "Security Agents";
   static const lostDevices = "Lost Devices";
+  static const deletedDevices = "Deleted Devices";
   static const devices = "Devices";
   static const students = "Students";
   const FirebaseCollectionName._();

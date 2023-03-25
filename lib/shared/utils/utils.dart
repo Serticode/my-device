@@ -32,14 +32,16 @@ class AppUtils {
       required String theMessage,
       required NotificationType theType}) {
     ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
-        elevation: 4.0.sp,
+        elevation: 2.0.sp,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         padding: EdgeInsets.symmetric(vertical: 20.0.h, horizontal: 25.0.w),
         forceActionsBelow: true,
         backgroundColor: theType == NotificationType.failure
-            ? Colors.red.shade400
+            ? Colors.red.shade500
             : theType == NotificationType.success
-                ? Colors.green.shade400
-                : AppColours.appBlue,
+                ? Colors.green
+                : AppColours.appBlack,
 
         //! THE CONTENT
         content: Text(theMessage,
@@ -102,49 +104,49 @@ class AppUtils {
     switch (DeviceType.values.elementAt(index)) {
       case DeviceType.fan:
         return Icon(PhosphorIcons.windBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.iPad:
         return Icon(PhosphorIcons.tabsBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.fridge:
         return Icon(PhosphorIcons.snowflakeBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.gameConsole:
         return Icon(PhosphorIcons.gameControllerBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.homePod:
         return Icon(PhosphorIcons.speakerSimpleHighBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.iWatch:
         return Icon(PhosphorIcons.timerBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.iphone:
         return Icon(PhosphorIcons.phoneBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.laptop:
         return Icon(PhosphorIcons.laptopBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.monitor:
         return Icon(PhosphorIcons.monitorBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.smartPhone:
         return Icon(PhosphorIcons.phone,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.smartSpeaker:
         return Icon(PhosphorIcons.speakerSimpleHighBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.smartWatch:
         return Icon(PhosphorIcons.watchBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.speaker:
         return Icon(PhosphorIcons.speakerHighBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       case DeviceType.tab:
         return Icon(PhosphorIcons.deviceTabletBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
       default:
         return Icon(PhosphorIcons.phoneBold,
-            color: AppColours.appWhite, size: 26.0.sp);
+            color: AppColours.appWhite, size: 22.0.sp);
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/screens/home/widgets/app_bar.dart';
 import 'package:my_device/screens/home/widgets/device.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
+import 'package:my_device/services/models/device/device_model.dart';
 import 'package:my_device/shared/constants/app_divider.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
@@ -48,7 +49,7 @@ class DeletedDevices extends ConsumerWidget {
                               itemBuilder: (context, index) => Device(
                                     onTap: () {},
                                     delete: () {},
-                                    index: index,
+                                    device: DeviceModel(),
                                     canDelete: false,
                                   ))),
 
