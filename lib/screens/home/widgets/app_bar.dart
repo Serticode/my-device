@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
+import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/services/providers/auth_state/auth_state_provider.dart';
+import 'package:my_device/services/providers/upload_image/upload_image_provider.dart';
 import 'package:my_device/services/providers/user_info/user_info_provider.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
@@ -39,7 +41,17 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                         //! PROFILE PICTURE
-                        const ProfilePicture(imageURL: ""),
+                        Consumer(builder: (context, ref, child) {
+                          return Consumer(builder: (context, ref, child) {
+                            final AsyncValue<UserModel> loggedInUser =
+                                ref.watch(loggedInUserDetailsProvider(
+                                    ref.read(authControllerProvider).userId!));
+                            return ProfilePicture(
+                                imageURL:
+                                    loggedInUser.value?.profilePhoto ?? "",
+                                boxFit: BoxFit.contain);
+                          });
+                        }),
 
                         //! SPACER
                         AppScreenUtils.horizontalSpaceTiny,

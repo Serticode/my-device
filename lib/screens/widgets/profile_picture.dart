@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/shared/constants/app_images.dart';
 import 'package:my_device/theme/app_theme.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ProfilePicture extends StatelessWidget {
   final String imageURL;
@@ -44,16 +43,5 @@ class ProfilePicture extends StatelessWidget {
           child: CircleAvatar(
               radius: smallerRadius ?? 21.0.r,
               backgroundColor: AppColours.appGreyFaint,
-              child: CachedNetworkImage(
-                  imageUrl: imageURL,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      CircularProgressIndicator(
-                          backgroundColor: AppColours.appBlue,
-                          color: AppColours.appGreyFaint,
-                          value: downloadProgress.progress),
-                  errorWidget: (context, url, error) => Icon(
-                      PhosphorIcons.circleWavyWarningBold,
-                      size: 18.0.sp,
-                      color: AppColours.appBlue),
-                  fit: boxFit ?? BoxFit.contain)));
+              backgroundImage: CachedNetworkImageProvider(imageURL)));
 }

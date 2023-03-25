@@ -7,7 +7,8 @@ import 'package:my_device/services/models/firebase/firebase_collection_names.dar
 import 'package:my_device/services/models/firebase/firebase_user_field_name.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 
-final loggedInUserDetailsProvider =
+final AutoDisposeStreamProviderFamily<UserModel, String>
+    loggedInUserDetailsProvider =
     StreamProvider.family.autoDispose<UserModel, UserId>(
   (ref, UserId userId) {
     final controller = StreamController<UserModel>();

@@ -8,6 +8,10 @@ import 'package:my_device/screens/home/widgets/home_screen.dart';
 import 'package:my_device/screens/news_feed/news_feed.dart';
 import 'package:my_device/screens/profile/profile.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
+import 'package:my_device/services/models/auth/user_model/user_model.dart';
+import 'package:my_device/services/providers/auth_state/auth_state_provider.dart';
+import 'package:my_device/services/providers/upload_image/upload_image_provider.dart';
+import 'package:my_device/services/providers/user_info/user_info_provider.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/theme/app_theme.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -88,10 +92,33 @@ class HomeWrapper extends ConsumerWidget {
                       //! PROFILE PICTURE
                       BottomNavigationBarItem(
                           label: "Profile",
-                          icon: ProfilePicture(
-                              imageURL: "",
-                              largerRadius: 14.0.r,
-                              smallerRadius: 12.0.r))
+                          icon: Consumer(builder: (context, ref, child) {
+                            return Consumer(builder: (context, ref, child) {
+                              final bool isLoading =
+                                  ref.watch(uploadImageProvider);
+                              final AsyncValue<UserModel> loggedInUser =
+                                  ref.watch(loggedInUserDetailsProvider(ref
+                                      .read(authControllerProvider)
+                                      .userId!));
+                              return isLoading
+                                  ? CircleAvatar(
+                                      radius: 14.0.r,
+                                      backgroundColor: AppColours.appWhite,
+                                      child: Transform.scale(
+                                          scale: 0.6,
+                                          child: CircularProgressIndicator(
+                                              color: AppColours.appGrey,
+                                              backgroundColor:
+                                                  AppColours.appBlue)))
+                                  : ProfilePicture(
+                                      imageURL:
+                                          loggedInUser.value?.profilePhoto ??
+                                              "",
+                                      largerRadius: 14.0.r,
+                                      smallerRadius: 12.0.r,
+                                      boxFit: BoxFit.contain);
+                            });
+                          }))
                     ])));
   }
 }

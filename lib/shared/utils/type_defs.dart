@@ -66,3 +66,6 @@ enum LottieAnimation {
   final String name;
   const LottieAnimation({required this.name});
 }
+
+//! FILE TYPE ENUM FOR UPLOADING IMAGES / VIDEOS
+enum FileType { image, video }

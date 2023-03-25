@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +8,11 @@ import 'package:my_device/screens/profile/widgets/profile_item.dart';
 import 'package:my_device/screens/profile/widgets/report_a_problem.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
+import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/services/providers/auth_state/auth_state_provider.dart';
+import 'package:my_device/services/providers/upload_image/upload_image_provider.dart';
 import 'package:my_device/services/providers/user_info/user_info_provider.dart';
+import 'package:my_device/services/repositories/auth_repository.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
@@ -35,27 +37,33 @@ class Profile extends ConsumerWidget {
     PhosphorIcons.notepadBold,
   ];
 
-  static final ValueNotifier<File?> userImage = ValueNotifier(null);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loggedInUser = ref.watch(
+    final AsyncValue<UserModel> loggedInUser = ref.watch(
         loggedInUserDetailsProvider(ref.read(authControllerProvider).userId!));
     final Size screenSize = MediaQuery.of(context).size;
+
     return Padding(
         padding: AppScreenUtils.defaultPadding,
         child: Column(children: [
           //! PROFILE PICTURE
           Align(
               alignment: Alignment.center,
-              child: ValueListenableBuilder(
-                  valueListenable: userImage,
-                  child: const SizedBox.shrink(),
-                  builder: (context, value, child) => ProfilePicture(
-                      imageURL: userImage.value?.path ?? "",
-                      largerRadius: 65.0.r,
-                      smallerRadius: 60.0.r,
-                      boxFit: BoxFit.contain))),
+              child: Consumer(builder: (context, ref, child) {
+                final bool isLoading = ref.watch(uploadImageProvider);
+                return isLoading
+                    ? CircleAvatar(
+                        radius: 65.0.r,
+                        backgroundColor: AppColours.appWhite,
+                        child: CircularProgressIndicator(
+                            color: AppColours.appGrey,
+                            backgroundColor: AppColours.appBlue))
+                    : ProfilePicture(
+                        imageURL: loggedInUser.value?.profilePhoto ?? "",
+                        largerRadius: 65.0.r,
+                        smallerRadius: 60.0.r,
+                        boxFit: BoxFit.contain);
+              })),
 
           //! SPACER
           AppScreenUtils.verticalSpaceSmall,
@@ -135,7 +143,9 @@ class Profile extends ConsumerWidget {
                                       onTap: () => profileOptionsCTA(
                                           index: index,
                                           context: context,
-                                          screenSize: screenSize),
+                                          screenSize: screenSize,
+                                          ref: ref,
+                                          loggedInUser: loggedInUser),
                                       splashColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       child: ProfileItem(
@@ -175,10 +185,32 @@ class Profile extends ConsumerWidget {
   static void profileOptionsCTA(
       {required int index,
       required BuildContext context,
-      required Size screenSize}) async {
+      required Size screenSize,
+      required WidgetRef ref,
+      required AsyncValue<UserModel> loggedInUser}) async {
     switch (index) {
       case 0:
-        userImage.value = await AppUtils.pickImage();
+        await AppUtils.pickImage().then((profilePhoto) async {
+          if (profilePhoto == null) {
+            "Select profile photo aborted".log();
+            return;
+          } else {
+            await ref
+                .read(uploadImageProvider.notifier)
+                .uploadProfilePhoto(
+                    userId: ref.read(authRepositoryProvider).userId!,
+                    profilePhoto: profilePhoto,
+                    fileType: FileType.image,
+                    loggedInUser: loggedInUser.value!)
+                .then((value) => value
+                    ? "User profile photo uploaded".log()
+                    : AppUtils.showBanner(
+                        context: context,
+                        theMessage: "User profile photo upload failed",
+                        theType: NotificationType.failure))
+                .catchError((error) => error.toString().log());
+          }
+        });
         break;
       case 1:
         AppNavigator.navigateToPage(
