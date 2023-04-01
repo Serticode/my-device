@@ -5,6 +5,7 @@ import 'package:my_device/services/models/device/device_model.dart';
 import 'package:my_device/services/models/firebase/firebase_collection_names.dart';
 import 'package:my_device/services/models/firebase/firebase_device_field_name.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
+import 'package:my_device/shared/utils/type_defs.dart';
 
 class DeviceDatabase {
   const DeviceDatabase();
@@ -56,18 +57,6 @@ class DeviceDatabase {
           createdAt: createdAt,
           deviceImages: deviceImageDownloadUrls);
 
-      //! GET DEVICE REFERENCE DOC ,. IF IT EXISTS, UPDATE IT; ELSE ADD A NEW DOC.
-      await deviceCollection
-          .where(FirebaseDeviceFieldName.ownerId, isEqualTo: ownerId)
-          .limit(1)
-          .get()
-          .then((deviceInfo) async {
-        if (deviceInfo.docs.isNotEmpty) {
-          await deviceInfo.docs.first.reference.update(device);
-          return true;
-        }
-      });
-
       await deviceCollection.add(device);
       return true;
     } catch (error) {
@@ -80,12 +69,14 @@ class DeviceDatabase {
   //! DELETE DEVICE
   Future<bool> deleteDevice({
     required String? serialNumber,
+    required String? deviceName,
+    required UserId? userId,
   }) async {
     try {
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .runTransaction(maxAttempts: 3, timeout: const Duration(seconds: 30),
               (transaction) async {
-            final query = await deviceCollection
+            final QuerySnapshot<Object?> query = await deviceCollection
                 .where(FirebaseDeviceFieldName.serialNumber,
                     isEqualTo: serialNumber)
                 .get();
@@ -95,6 +86,19 @@ class DeviceDatabase {
           })
           .catchError((error) => error.log())
           .then((value) => value?.log());
+
+      await FirebaseStorage.instance
+          .ref()
+          .child(userId!)
+          .child(FirebaseCollectionName.deviceImages)
+          .child(deviceName!)
+          .listAll()
+          .then((value) {
+        for (var element in value.items) {
+          FirebaseStorage.instance.ref(element.fullPath).delete();
+        }
+      });
+
       return true;
     } catch (error) {
       error.toString().log();

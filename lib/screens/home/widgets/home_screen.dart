@@ -9,6 +9,7 @@ import 'package:my_device/screens/widgets/animations/error_animation.dart';
 import 'package:my_device/screens/widgets/animations/loading_animation.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/services/models/device/device_model.dart';
+import 'package:my_device/services/providers/auth_state/auth_state_provider.dart';
 import 'package:my_device/services/providers/user_devices/user_devices_provider.dart';
 import 'package:my_device/services/providers/user_devices_controller/user_devices_controller_provider.dart';
 import 'package:my_device/shared/constants/app_divider.dart';
@@ -69,14 +70,18 @@ class HomeScreen extends ConsumerWidget {
                                                     devices.elementAt(index),
                                               ))),
                                   delete: () async {
-                                    "Device Delete Pressed".log();
-
                                     await ref
                                         .read(deviceControllerProvider.notifier)
                                         .deleteDevice(
                                             serialNumber: devices
                                                 .elementAt(index)
-                                                .serialNumber);
+                                                .serialNumber,
+                                            deviceName: devices
+                                                .elementAt(index)
+                                                .deviceName,
+                                            userId: ref
+                                                .read(authControllerProvider)
+                                                .userId);
                                   },
                                   device: devices.elementAt(index)));
                         }

@@ -30,16 +30,13 @@ class ShowDeviceImage extends ConsumerWidget {
           return ClipRRect(
               borderRadius: BorderRadius.circular(12.0.r),
               child: CachedNetworkImage(
-                  fit: BoxFit.cover,
                   imageUrl: image,
+                  fit: BoxFit.cover,
                   progressIndicatorBuilder: (context, url, progress) =>
-                      Transform.scale(
-                          scale: 0.4,
-                          child: CircularProgressIndicator(
-                              value: progress.progress,
-                              strokeWidth: 3.0.sp,
-                              color: AppColours.appBlue,
-                              backgroundColor: AppColours.appWhite)),
+                      LinearProgressIndicator(
+                          value: progress.progress,
+                          color: AppColours.appBlue,
+                          backgroundColor: AppColours.appWhite),
                   errorWidget: (context, url, error) =>
                       Icon(PhosphorIcons.xBold, size: 18.0.sp)));
         }).toList());

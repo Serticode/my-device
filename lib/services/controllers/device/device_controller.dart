@@ -58,14 +58,18 @@ class DeviceController extends StateNotifier<IsLoading> {
   }
 
   //! DELETE DEVICE
-  FutureEither<bool> deleteDevice({
-    required String? serialNumber,
-  }) async {
+  FutureEither<bool> deleteDevice(
+      {required String? serialNumber,
+      required String? deviceName,
+      required UserId? userId}) async {
     try {
       state = true;
 
       bool isDeviceDeleted = await _database
-          .deleteDevice(serialNumber: serialNumber)
+          .deleteDevice(
+              serialNumber: serialNumber,
+              deviceName: deviceName,
+              userId: userId)
           .catchError((error) {
         error.toString().log();
         state = false;

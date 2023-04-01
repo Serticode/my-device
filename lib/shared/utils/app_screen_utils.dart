@@ -18,7 +18,7 @@ class AppScreenUtils {
 
   //! APP CONSTANT PADDING
   static final EdgeInsets defaultPadding =
-      EdgeInsets.symmetric(horizontal: 18.0.w, vertical: 8.0.h);
+      EdgeInsets.symmetric(horizontal: 18.0.w, vertical: 6.0.h);
   static final EdgeInsets textFormFieldPadding =
       EdgeInsets.symmetric(horizontal: 21.0.w, vertical: 21.0.h);
   static final EdgeInsets elevatedButtonPadding =
