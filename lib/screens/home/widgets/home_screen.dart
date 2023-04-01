@@ -41,7 +41,6 @@ class HomeScreen extends ConsumerWidget {
           //! YOU CANNOT UPDATE DEVICE DETAILS ONCE ADDED, IT'S A SECURITY MEASURE SO IF A DEVICE IS STOLEN ...
           //! ONLY THE MAIN OWNER HAS THE DEVICE DETAILS AS EXACT AS DESCRIBED.
           //! DELETED DEVICES LIST IS NEEDED TO TRACT LIST OF DEVICES A USER HAS DELETED.
-
           Expanded(
               child: RefreshIndicator(
                   onRefresh: () {

@@ -11,6 +11,9 @@ class DeviceDatabase {
   const DeviceDatabase();
   static final CollectionReference deviceCollection =
       FirebaseFirestore.instance.collection(FirebaseCollectionName.devices);
+  static final CollectionReference deletedDeviceCollection = FirebaseFirestore
+      .instance
+      .collection(FirebaseCollectionName.deletedDevices);
 
   //! SAVE DEVICE INFO
   Future<bool> saveDeviceInfo(
@@ -66,7 +69,10 @@ class DeviceDatabase {
     }
   }
 
-  //! DELETE DEVICE
+  //! DELETE DEVICE -
+  //! FIRST, ADD THE DELETED DEVICE TO THE LIST OF DELETED DEVICES SAME WAY IT WAS SAVED USING THE USERS ID
+  //!  THEN DELETE THE DOCUMENT FROM THE USERS LIST OF DEVICES
+  //! KEEP THE DEVICE IN STORAGE, FOR SCHOOL SECURITY PERSONNEL TO DELETE AT THE END OF THE SEMESTER OR SESSION
   Future<bool> deleteDevice({
     required String? serialNumber,
     required String? deviceName,
@@ -81,23 +87,31 @@ class DeviceDatabase {
                     isEqualTo: serialNumber)
                 .get();
             for (final doc in query.docs) {
+              final DeviceModel device = DeviceModel.fromJSON(
+                  doc.data()! as Map<String, dynamic>,
+                  ownerId: userId!);
+
+              await deletedDeviceCollection.add(device);
+
               transaction.delete(doc.reference);
             }
           })
           .catchError((error) => error.log())
           .then((value) => value?.log());
 
-      await FirebaseStorage.instance
-          .ref()
-          .child(userId!)
-          .child(FirebaseCollectionName.deviceImages)
-          .child(deviceName!)
-          .listAll()
-          .then((value) {
-        for (var element in value.items) {
-          FirebaseStorage.instance.ref(element.fullPath).delete();
-        }
-      });
+      //! THE BELOW IS COMMENTED OUT, TO KEEP A REFERENCE TO THE METHOD OF DELETING THE DEVICE IMAGE DATA FROM
+      //! FIREBASE STORAGE
+      // await FirebaseStorage.instance
+      //     .ref()
+      //     .child(userId!)
+      //     .child(FirebaseCollectionName.deviceImages)
+      //     .child(deviceName!)
+      //     .listAll()
+      //     .then((value) {
+      //   for (var element in value.items) {
+      //     FirebaseStorage.instance.ref(element.fullPath).delete();
+      //   }
+      // });
 
       return true;
     } catch (error) {
