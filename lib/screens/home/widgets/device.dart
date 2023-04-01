@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_device/screens/home/widgets/show_device_image.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/services/models/device/device_model.dart';
+import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/shared/utils/utils.dart';
@@ -47,7 +49,7 @@ class Device extends ConsumerWidget {
                       ? AppUtils.getDeviceIcons(
                           index: DeviceType.values.indexWhere(
                               (element) => element.name == device.deviceType))
-                      : Image.asset("")),
+                      : ShowDeviceImage(devicePictures: device.deviceImages!)),
 
               //! SPACER
               AppScreenUtils.horizontalSpaceSmall,

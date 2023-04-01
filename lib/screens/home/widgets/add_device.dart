@@ -1,3 +1,6 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+import 'dart:io';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +16,17 @@ import 'package:my_device/shared/utils/type_defs.dart';
 import 'package:my_device/shared/utils/utils.dart';
 import 'package:my_device/theme/app_theme.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+ValueNotifier<List<File>>? _devicePictures = ValueNotifier([]);
+List<String> devicePictureNames = [
+  "Full picture",
+  "Full picture - different angle",
+  "Serial number",
+  "Model number"
+];
+ValueNotifier<List<bool>> _isDevicePictureAdded =
+    ValueNotifier([false, false, false, false]);
+ValueNotifier<int> _currentSelectedIndex = ValueNotifier(0);
 
 class AddDevice extends ConsumerStatefulWidget {
   const AddDevice({super.key});
@@ -51,6 +65,9 @@ class _AddDeviceState extends ConsumerState<AddDevice> {
     colourController.dispose();
     brandController.dispose();
     deviceNameController.dispose();
+    _devicePictures?.value = [];
+    _isDevicePictureAdded.value = [false, false, false, false];
+    _currentSelectedIndex.value = 0;
     super.dispose();
   }
 
@@ -83,21 +100,42 @@ class _AddDeviceState extends ConsumerState<AddDevice> {
                       AppScreenUtils.verticalSpaceTiny,
 
                       //! ADD DEVICE IMAGE
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: AppColours.appGreyFaint.withOpacity(0.2),
-                              border: Border.all(
-                                  color:
-                                      AppColours.appGreyFaint.withOpacity(0.4),
-                                  width: 2.0.sp),
-                              borderRadius: BorderRadius.circular(25.0.r)),
-                          child: Icon(PhosphorIcons.imageSquareBold,
-                              size: 32.0.sp)),
+                      const AddDeviceImage(),
 
                       //! SPACER
-                      AppScreenUtils.verticalSpaceTiny,
+                      AppScreenUtils.verticalSpaceSmall,
+
+                      //! TRACER
+                      SizedBox(
+                          width: double.infinity,
+                          child: ValueListenableBuilder(
+                              valueListenable: _isDevicePictureAdded,
+                              builder: (context, value, child) => Column(
+                                    children: devicePictureNames
+                                        .map((name) => Row(children: [
+                                              //! ICON
+                                              Icon(PhosphorIcons.checks,
+                                                  color: _isDevicePictureAdded
+                                                          .value
+                                                          .elementAt(
+                                                              devicePictureNames
+                                                                  .indexOf(
+                                                                      name))
+                                                      ? Colors.green
+                                                      : AppColours.appWhite),
+
+                                              //! SPACER
+                                              AppScreenUtils
+                                                  .horizontalSpaceTiny,
+
+                                              //! NAME
+                                              Text(name)
+                                            ]))
+                                        .toList(),
+                                  ))),
+
+                      //! SPACER
+                      AppScreenUtils.verticalSpaceSmall,
 
                       //! NOTICE
                       const AppFadeAnimation(
@@ -293,70 +331,69 @@ class _AddDeviceState extends ConsumerState<AddDevice> {
                                                   ])
                                             :
 
-                                            //! FAVES
+                                            //! DEVICE TYPES
                                             ValueListenableBuilder(
                                                 valueListenable: deviceTypes,
                                                 builder:
                                                     (context, value, child) {
-                                                  return Consumer(builder:
-                                                      (context, ref, child) {
-                                                    return Stack(children: [
-                                                      SingleChildScrollView(
-                                                          physics:
-                                                              const BouncingScrollPhysics(),
-                                                          child: Column(
-                                                              children: [
-                                                                ...deviceTypes
-                                                                    .value
-                                                                    .map((deviceType) => InkWell(
-                                                                        onTap: () {
-                                                                          selectedDeviceType.value =
-                                                                              deviceType;
+                                                  return Stack(children: [
+                                                    SingleChildScrollView(
+                                                        physics:
+                                                            const BouncingScrollPhysics(),
+                                                        child: Column(
+                                                            children: [
+                                                              ...deviceTypes
+                                                                  .value
+                                                                  .map((deviceType) => InkWell(
+                                                                      onTap: () {
+                                                                        selectedDeviceType.value =
+                                                                            deviceType;
 
-                                                                          isDeviceTypeTapped.value =
-                                                                              !isDeviceTypeTapped.value;
+                                                                        isDeviceTypeTapped.value =
+                                                                            !isDeviceTypeTapped.value;
 
-                                                                          isDeviceTypeSelected.value =
-                                                                              !isDeviceTypeSelected.value;
-                                                                        },
-                                                                        child: Container(
-                                                                            height: 55.h,
-                                                                            margin: EdgeInsets.only(bottom: 5.h),
-                                                                            child: Row(children: [
-                                                                              Container(
-                                                                                height: 50.0.h,
-                                                                                width: 55.0.w,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: AppColours.appGreyFaint.withOpacity(0.2),
-                                                                                  borderRadius: BorderRadius.circular(12.0.r),
-                                                                                  border: Border.all(width: 1.2, color: AppColours.appGreyFaint),
-                                                                                ),
-                                                                                child: AppUtils.getDeviceIcons(
-                                                                                  index: deviceTypes.value.indexOf(deviceType),
-                                                                                ),
+                                                                        isDeviceTypeSelected.value =
+                                                                            !isDeviceTypeSelected.value;
+                                                                      },
+                                                                      child: Container(
+                                                                          height: 55.h,
+                                                                          margin: EdgeInsets.only(bottom: 5.h),
+                                                                          child: Row(children: [
+                                                                            Container(
+                                                                              height: 50.0.h,
+                                                                              width: 55.0.w,
+                                                                              decoration: BoxDecoration(
+                                                                                color: AppColours.appGreyFaint.withOpacity(0.2),
+                                                                                borderRadius: BorderRadius.circular(12.0.r),
+                                                                                border: Border.all(width: 1.2, color: AppColours.appGreyFaint),
                                                                               ),
+                                                                              child: AppUtils.getDeviceIcons(
+                                                                                index: deviceTypes.value.indexOf(deviceType),
+                                                                              ),
+                                                                            ),
 
-                                                                              //! SPACER
-                                                                              AppScreenUtils.horizontalSpaceSmall,
+                                                                            //! SPACER
+                                                                            AppScreenUtils.horizontalSpaceSmall,
 
-                                                                              AppTextWidget(theText: deviceType.name, textType: AppTextType.regularBody)
-                                                                            ]))))
-                                                                    .toList()
-                                                              ])),
+                                                                            AppTextWidget(
+                                                                                theText: deviceType.name,
+                                                                                textType: AppTextType.regularBody)
+                                                                          ]))))
+                                                                  .toList()
+                                                            ])),
 
-                                                      //! CLOSE BUTTON
-                                                      Positioned(
-                                                          right: 0,
-                                                          child: IconButton(
-                                                              onPressed:
-                                                                  toggleSelectDeviceType,
-                                                              icon: Icon(
-                                                                  Icons.close,
-                                                                  size: 22.sp,
-                                                                  color: AppColours
-                                                                      .appBlue)))
-                                                    ]);
-                                                  });
+                                                    //! CLOSE BUTTON
+                                                    Positioned(
+                                                        right: 0,
+                                                        child: IconButton(
+                                                            onPressed:
+                                                                toggleSelectDeviceType,
+                                                            icon: Icon(
+                                                                Icons.close,
+                                                                size: 22.sp,
+                                                                color: AppColours
+                                                                    .appBlue)))
+                                                  ]);
                                                 }));
                           }),
 
@@ -405,7 +442,9 @@ class _AddDeviceState extends ConsumerState<AddDevice> {
                                               brandController
                                                   .value.text.isNotEmpty &&
                                               colourController
-                                                  .value.text.isNotEmpty) {
+                                                  .value.text.isNotEmpty &&
+                                              _devicePictures!.value.length ==
+                                                  4) {
                                             await ref
                                                 .read(deviceControllerProvider
                                                     .notifier)
@@ -432,7 +471,8 @@ class _AddDeviceState extends ConsumerState<AddDevice> {
                                                         colourController
                                                             .value.text
                                                             .trim(),
-                                                    deviceImages: null)
+                                                    deviceImages:
+                                                        _devicePictures!.value)
                                                 .then((value) async => value
                                                         .isRight()
                                                     ? {
@@ -448,7 +488,7 @@ class _AddDeviceState extends ConsumerState<AddDevice> {
                                             AppUtils.showBanner(
                                                 context: context,
                                                 theMessage:
-                                                    "At lease one field is empty",
+                                                    "At lease one field is empty OR you have less than four pictures for your device",
                                                 theType: NotificationType.info);
                                           }
                                         }));
@@ -492,6 +532,128 @@ class DeviceDetail extends ConsumerWidget {
           AppScreenUtils.horizontalSpaceSmall,
 
           AppTextWidget(theText: value, textType: AppTextType.regularBody)
+        ]));
+  }
+}
+
+//!
+//! ADD DEVICE IMAGE
+class AddDeviceImage extends ConsumerWidget {
+  const AddDeviceImage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.3,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: AppColours.appGreyFaint.withOpacity(0.2),
+            border: Border.all(
+                color: AppColours.appGreyFaint.withOpacity(0.4), width: 2.0.sp),
+            borderRadius: BorderRadius.circular(25.0.r)),
+        child: Stack(children: [
+          //! BOTTOM
+          ValueListenableBuilder(
+              valueListenable: _devicePictures!,
+              builder: (context, value, child) => CarouselSlider(
+                  options: CarouselOptions(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      aspectRatio: 16 / 9,
+                      viewportFraction: 1,
+                      initialPage: 0,
+                      enableInfiniteScroll: true,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 3),
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 800),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enlargeCenterPage: true,
+                      enlargeFactor: 0.5,
+                      scrollDirection: Axis.horizontal),
+                  items: _devicePictures!.value.isEmpty
+                      ? List.generate(
+                          4,
+                          (index) => Center(
+                              child: Text(devicePictureNames.elementAt(index))))
+                      : _devicePictures!.value.map((image) {
+                          return Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      filterQuality: FilterQuality.high,
+                                      fit: BoxFit.fitWidth,
+                                      image: FileImage(image)),
+                                  borderRadius: BorderRadius.circular(25.0.r)),
+                              child: Center(
+                                  child: Text(
+                                      devicePictureNames.elementAt(
+                                          _devicePictures!.value
+                                              .indexOf(image)),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(fontSize: 18.0.sp))));
+                        }).toList())),
+
+          //! BOTTOM / DELETE BUTTON
+          Positioned(
+              right: 2.0.w,
+              bottom: 60.0.h,
+              child: FloatingActionButton(
+                  mini: true,
+                  heroTag: "Delete FAB",
+                  onPressed: () async {
+                    if (_devicePictures!.value.isNotEmpty) {
+                      --_currentSelectedIndex.value;
+                      _devicePictures!.value
+                          .removeAt(_currentSelectedIndex.value);
+                      _isDevicePictureAdded.value[_currentSelectedIndex.value] =
+                          false;
+
+                      _isDevicePictureAdded.notifyListeners();
+                      _devicePictures!.notifyListeners();
+                    } else {
+                      AppUtils.showBanner(
+                          context: context,
+                          theMessage: "No pictures to delete",
+                          theType: NotificationType.info);
+                    }
+                  },
+                  backgroundColor: AppColours.appWhite,
+                  child: Icon(PhosphorIcons.trashBold,
+                      color: AppColours.appRed, size: 18.0.sp))),
+
+          //! BOTTOM / ADD BUTTON
+          Positioned(
+              right: 2.0.w,
+              bottom: 2.0.h,
+              child: FloatingActionButton(
+                  mini: true,
+                  onPressed: () async {
+                    if (_devicePictures!.value.length < 4) {
+                      await AppUtils.pickImage().then((devicePicture) {
+                        if (devicePicture == null) {
+                          return;
+                        } else {
+                          _devicePictures!.value.add(devicePicture);
+                          _isDevicePictureAdded
+                              .value[_currentSelectedIndex.value] = true;
+                          _currentSelectedIndex.value++;
+
+                          _isDevicePictureAdded.notifyListeners();
+                          _devicePictures!.notifyListeners();
+                        }
+                      }).catchError((error) => error.log());
+                    } else {
+                      AppUtils.showBanner(
+                          context: context,
+                          theMessage: "You cannot add any more pictures",
+                          theType: NotificationType.info);
+                    }
+                  },
+                  backgroundColor: AppColours.appWhite,
+                  child: Icon(PhosphorIcons.plusBold,
+                      color: AppColours.appBlue, size: 18.0.sp)))
         ]));
   }
 }

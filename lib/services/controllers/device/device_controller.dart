@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:my_device/services/database/device/device_database.dart';
@@ -22,7 +24,7 @@ class DeviceController extends StateNotifier<IsLoading> {
       required String? brand,
       required String? deviceColour,
       required DateTime createdAt,
-      required List<String>? deviceImages}) async {
+      required List<File>? deviceImages}) async {
     try {
       state = true;
 

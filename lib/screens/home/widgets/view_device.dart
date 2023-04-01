@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_device/screens/home/widgets/show_device_image.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/services/models/device/device_model.dart';
 import 'package:my_device/services/providers/user_devices_controller/user_devices_controller_provider.dart';
@@ -54,7 +55,8 @@ class ViewDeviceScreen extends ConsumerWidget {
                                     index: DeviceType.values.indexWhere(
                                         (element) =>
                                             element.name == device.deviceType)))
-                            : Image.asset("")),
+                            : ShowDeviceImage(
+                                devicePictures: device.deviceImages!)),
 
                     //! SPACER
                     AppScreenUtils.verticalSpaceTiny,

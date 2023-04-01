@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_device/services/models/device/device_model.dart';
 import 'package:my_device/services/models/firebase/firebase_collection_names.dart';
@@ -19,21 +21,41 @@ class DeviceDatabase {
       required String? brand,
       required String? deviceColour,
       required DateTime createdAt,
-      required List<String>? deviceImages}) async {
-    //! PAYLOAD
-    final DeviceModel device = DeviceModel(
-        ownerId: ownerId ?? "",
-        deviceName: deviceName ?? "",
-        deviceType: deviceType ?? "",
-        deviceColour: deviceColour ?? "",
-        modelNumber: modelNumber ?? "",
-        serialNumber: serialNumber ?? "",
-        brand: brand ?? "",
-        isLost: false,
-        createdAt: createdAt,
-        deviceImages: deviceImages ?? []);
-
+      required List<File>? deviceImages}) async {
     try {
+      //! PLACE HOLDER
+      List<String> deviceImageDownloadUrls = [];
+
+      final Reference deviceImageRef = FirebaseStorage.instance
+          .ref()
+          .child(ownerId!)
+          .child(FirebaseCollectionName.deviceImages)
+          .child(deviceName!);
+
+      for (var element in deviceImages!) {
+        await deviceImageRef
+            .child(element.path.split("/").last)
+            .putFile(element)
+            .then((snapshot) async => deviceImageDownloadUrls
+                .add(await snapshot.ref.getDownloadURL()))
+            .catchError((error) {
+          error.toString().log();
+        });
+      }
+
+      //! PAYLOAD
+      final DeviceModel device = DeviceModel(
+          ownerId: ownerId,
+          deviceName: deviceName,
+          deviceType: deviceType ?? "",
+          deviceColour: deviceColour ?? "",
+          modelNumber: modelNumber ?? "",
+          serialNumber: serialNumber ?? "",
+          brand: brand ?? "",
+          isLost: false,
+          createdAt: createdAt,
+          deviceImages: deviceImageDownloadUrls);
+
       //! GET DEVICE REFERENCE DOC ,. IF IT EXISTS, UPDATE IT; ELSE ADD A NEW DOC.
       await deviceCollection
           .where(FirebaseDeviceFieldName.ownerId, isEqualTo: ownerId)
