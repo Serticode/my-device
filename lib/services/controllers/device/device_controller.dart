@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:my_device/services/database/device/device_database.dart';
+import 'package:my_device/services/models/device/device_model.dart';
 import 'package:my_device/services/repositories/auth_repository.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/failure.dart';
@@ -48,6 +49,31 @@ class DeviceController extends StateNotifier<IsLoading> {
       state = false;
 
       return isDeviceSaved
+          ? right(true)
+          : left(Failure(message: "Device not saved"));
+    } catch (error) {
+      error.toString().log();
+
+      return left(Failure(message: "Failed to save user device"));
+    }
+  }
+
+  //! MARK AS LOST
+  FutureEither<bool> markAsLost({required DeviceModel device}) async {
+    try {
+      state = true;
+
+      bool isDeviceDeleted = await _database
+          .markAsLost(device: device, userId: _authRepository.userId!)
+          .catchError((error) {
+        error.toString().log();
+        state = false;
+        return false;
+      });
+
+      state = false;
+
+      return isDeviceDeleted
           ? right(true)
           : left(Failure(message: "Device not saved"));
     } catch (error) {

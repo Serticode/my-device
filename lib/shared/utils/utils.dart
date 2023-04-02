@@ -26,6 +26,13 @@ class AppUtils {
     }
   }
 
+  //! GET DEVICE TYPE
+  static String fetchDeviceType() {
+    final MediaQueryData data =
+        MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+    return data.size.shortestSide < 600 ? "phone" : "tablet";
+  }
+
   //! SHOW BANNER
   static showBanner(
       {required BuildContext context,

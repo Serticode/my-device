@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/screens/home/widgets/show_device_image.dart';
+import 'package:my_device/screens/widgets/animated_button.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/services/models/device/device_model.dart';
 import 'package:my_device/services/providers/auth_state/auth_state_provider.dart';
 import 'package:my_device/services/providers/user_devices_controller/user_devices_controller_provider.dart';
+import 'package:my_device/services/providers/user_id/user_id_provider.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
@@ -131,11 +133,44 @@ class ViewDeviceScreen extends ConsumerWidget {
               //! SPACER
               AppScreenUtils.verticalSpaceSmall,
 
-              SizedBox(
-                  height: 45.0.h,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {}, child: const Text("Mark as lost"))),
+              //! MARK AS LOST
+              Center(
+                  child: AppFadeAnimation(
+                      delay: 1.6,
+                      child: Consumer(builder: (context, ref, child) {
+                        final bool isLoading =
+                            ref.watch(deviceControllerProvider);
+                        final double width = isLoading
+                            ? 56.w
+                            : MediaQuery.of(context).size.width;
+                        final double radius = isLoading ? 56.0.r : 21.0.r;
+
+                        return IgnorePointer(
+                            ignoring: isLoading,
+                            child: AnimatedButton(
+                                height: 45.0.h,
+                                width: width,
+                                radius: radius,
+                                content: Center(
+                                    child: isLoading
+                                        ? Transform.scale(
+                                            scale: 0.7,
+                                            child:
+                                                const CircularProgressIndicator(
+                                                    color: AppColours.appWhite))
+                                        : const AppTextWidget(
+                                            theText: AppTexts.markAsLost,
+                                            textType: AppTextType.regularBody)),
+                                onTap: () async {
+                                  await ref
+                                      .read(deviceControllerProvider.notifier)
+                                      .markAsLost(device: device)
+                                      .then((value) => value.fold(
+                                          (failed) => failed.log(),
+                                          (success) =>
+                                              Navigator.of(context).pop()));
+                                }));
+                      }))),
 
               //! SPACER
               AppScreenUtils.verticalSpaceSmall,

@@ -57,6 +57,7 @@ abstract class AppTexts {
   static const deviceBrand = "Device brand";
   static const deviceName = "Device name";
   static const saveDevice = "Save device";
+  static const markAsLost = "Mark as lost";
   static const profileOptions = "Profile options";
   static const aboutUs = "About us.";
   static const aboutUsNote =

@@ -14,6 +14,8 @@ class DeviceDatabase {
   static final CollectionReference deletedDeviceCollection = FirebaseFirestore
       .instance
       .collection(FirebaseCollectionName.deletedDevices);
+  static final CollectionReference lostDevicesCollection =
+      FirebaseFirestore.instance.collection(FirebaseCollectionName.lostDevices);
 
   //! SAVE DEVICE INFO
   Future<bool> saveDeviceInfo(
@@ -65,6 +67,36 @@ class DeviceDatabase {
     } catch (error) {
       error.toString().log();
 
+      return false;
+    }
+  }
+
+  //! MARK AS LOST
+  Future<bool> markAsLost(
+      {required UserId userId, required DeviceModel device}) async {
+    try {
+      device.update("isLost", (value) => value = true);
+      device.update("ownerId", (value) => value = userId);
+
+      await lostDevicesCollection.add(device);
+
+      await FirebaseFirestore.instance
+          .runTransaction(maxAttempts: 3, timeout: const Duration(seconds: 30),
+              (transaction) async {
+            final QuerySnapshot<Object?> query = await deviceCollection
+                .where(FirebaseDeviceFieldName.serialNumber,
+                    isEqualTo: device.serialNumber)
+                .get();
+            for (final doc in query.docs) {
+              transaction.delete(doc.reference);
+            }
+          })
+          .catchError((error) => error.log())
+          .then((value) => value?.log());
+
+      return true;
+    } catch (error) {
+      error.log();
       return false;
     }
   }
