@@ -221,6 +221,7 @@ class Profile extends ConsumerWidget {
             context: context,
             height: screenSize.height * 0.3,
             width: screenSize.width,
+            whenComplete: () {},
             child: const About());
         break;
       case 3:
@@ -228,6 +229,7 @@ class Profile extends ConsumerWidget {
             context: context,
             height: screenSize.height * 0.35,
             width: screenSize.width,
+            whenComplete: () {},
             child: const ReportAProblem());
         break;
       default:

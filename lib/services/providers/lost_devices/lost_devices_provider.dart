@@ -6,12 +6,11 @@ import 'package:my_device/services/models/device/device_model.dart';
 import 'package:my_device/services/models/firebase/firebase_collection_names.dart';
 import 'package:my_device/services/models/firebase/firebase_device_field_name.dart';
 import 'package:my_device/services/providers/user_id/user_id_provider.dart';
+import 'package:my_device/shared/utils/app_extensions.dart';
 
 final AutoDisposeStreamProvider<Iterable<DeviceModel>> lostDevicesProvider =
     StreamProvider.autoDispose<Iterable<DeviceModel>>(
   (ref) {
-    final userId = ref.watch(userIdProvider);
-
     final controller = StreamController<Iterable<DeviceModel>>();
 
     controller.onListen = () {
@@ -21,14 +20,14 @@ final AutoDisposeStreamProvider<Iterable<DeviceModel>> lostDevicesProvider =
     final sub = FirebaseFirestore.instance
         .collection(FirebaseCollectionName.lostDevices)
         .orderBy(FirebaseDeviceFieldName.createdAt, descending: true)
-        //.where(FirebaseDeviceFieldName.ownerId, isEqualTo: userId)
         .snapshots(includeMetadataChanges: true)
         .listen((snapshot) {
       final List<QueryDocumentSnapshot<Map<String, dynamic>>> documents =
           snapshot.docs;
       final Iterable<DeviceModel> devices = documents
           .where((doc) => !doc.metadata.hasPendingWrites)
-          .map((doc) => DeviceModel.fromJSON(doc.data(), ownerId: doc.id));
+          .map((doc) =>
+              DeviceModel.fromJSON(doc.data(), ownerId: doc.data()["ownerId"]));
       controller.sink.add(devices);
     });
 

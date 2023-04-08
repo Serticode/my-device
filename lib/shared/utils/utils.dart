@@ -88,7 +88,8 @@ class AppUtils {
           {required BuildContext context,
           required double height,
           required double width,
-          required Widget child}) =>
+          required Widget child,
+          required void Function() whenComplete}) =>
       showBottomSheet(
           context: context,
           elevation: 21.0.h,
@@ -104,7 +105,7 @@ class AppUtils {
               margin: EdgeInsets.symmetric(vertical: 6.0.h, horizontal: 6.0.w),
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(21.0.r)),
-              child: child));
+              child: child)).closed.whenComplete(() => whenComplete());
 
   //! GET DEVICE DEFAULT IMAGE
   static Icon getDeviceIcons({required int index}) {

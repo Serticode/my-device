@@ -5,7 +5,9 @@ import 'package:my_device/screens/widgets/animations/empty_contents_animation_wi
 import 'package:my_device/screens/widgets/animations/error_animation.dart';
 import 'package:my_device/screens/widgets/animations/loading_animation.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
+import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/services/models/device/device_model.dart';
+import 'package:my_device/services/providers/device_owner/device_owner_provider.dart';
 import 'package:my_device/services/providers/lost_devices/lost_devices_provider.dart';
 import 'package:my_device/shared/constants/app_divider.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
@@ -16,6 +18,8 @@ import 'widgets/lost_device_owner_details.dart';
 
 class NewsFeed extends ConsumerWidget {
   const NewsFeed({super.key});
+
+  static ValueNotifier<bool> isBottomSheetOpen = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,31 +54,52 @@ class NewsFeed extends ConsumerWidget {
                     return Future.delayed(const Duration(seconds: 1));
                   },
                   child: lostDevices.when(
-                      data: (devices) {
-                        if (devices.isEmpty) {
+                      data: (listOfDevices) {
+                        if (listOfDevices.isEmpty) {
                           return const EmptyContentsWithTextAnimationView(
-                            text:
-                                "There are no lost devices within the community on our platform",
-                          );
+                              text:
+                                  "There are no lost devices within the community on our platform");
                         } else {
-                          return ListView.separated(
-                              itemCount: devices.length,
-                              physics: const BouncingScrollPhysics(),
-                              separatorBuilder: (context, index) =>
-                                  const AppDivider(isVertical: false),
-                              itemBuilder: (context, index) => LostDevice(
-                                  device: devices.elementAt(index),
-                                  onTap: () => AppUtils.showAppBottomSheet(
-                                      context: context,
-                                      height: screenSize.height * 0.6,
-                                      width: screenSize.width,
-                                      child: const LostDeviceOwnerDetails()),
-                                  //! TODO: WHEN YOU TAP ON LOST DEVICE, SHOW DEVICE OWNER DETAILS
-                                  index: index));
+                          return ValueListenableBuilder(
+                              valueListenable: isBottomSheetOpen,
+                              builder: (context, value, child) => IgnorePointer(
+                                  ignoring: isBottomSheetOpen.value,
+                                  child: ListView.separated(
+                                      itemCount: listOfDevices.length,
+                                      physics: const BouncingScrollPhysics(),
+                                      separatorBuilder: (context, index) =>
+                                          const AppDivider(isVertical: false),
+                                      itemBuilder: (context, index) =>
+                                          LostDevice(
+                                              device: listOfDevices
+                                                  .elementAt(index),
+                                              onTap: () {
+                                                isBottomSheetOpen.value = true;
+                                                AppUtils.showAppBottomSheet(
+                                                    context: context,
+                                                    height: screenSize.height *
+                                                        0.7,
+                                                    width: screenSize.width,
+                                                    whenComplete: () =>
+                                                        isBottomSheetOpen
+                                                            .value = false,
+                                                    child:
+                                                        OwnerDetailsForLostDevices(
+                                                            theDevice:
+                                                                listOfDevices
+                                                                    .elementAt(
+                                                                        index)));
+                                              },
+                                              index: index))));
                         }
                       },
-                      error: (error, stackTrace) => const ErrorAnimation(),
-                      loading: () => const LoadingAnimation())))
+                      error: (error, stackTrace) =>
+                          const Center(child: ErrorAnimation()),
+                      loading: () => Center(
+                          child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              width: double.infinity,
+                              child: const LoadingAnimation())))))
         ]));
   }
 }

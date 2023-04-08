@@ -18,10 +18,6 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class HomeWrapper extends ConsumerWidget {
   const HomeWrapper({super.key});
-  //! SCAFFOLD KEY
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>();
-
   //! PAGE INDEX
   static final ValueNotifier<int> currentPageIndex = ValueNotifier(0);
   //! LIST OF PAGES
@@ -30,7 +26,6 @@ class HomeWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        key: _scaffoldKey,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(75.0.h),
             child: ValueListenableBuilder(
