@@ -37,7 +37,7 @@ class _LostDeviceFieldsItemState extends ConsumerState<LostDeviceFieldsItem> {
       ProfilePicture(
           imageURL: deviceOwnerDetails?.profilePhoto ?? "",
           largerRadius: 40.0.r,
-          smallerRadius: 35.0.r,
+          smallerRadius: 37.0.r,
           boxFit: BoxFit.contain),
 
       //! SPACER
@@ -55,7 +55,6 @@ class _LostDeviceFieldsItemState extends ConsumerState<LostDeviceFieldsItem> {
       AppScreenUtils.verticalSpaceTiny,
 
       //! DEVICE IMAGES
-
       Container(
           height: MediaQuery.of(context).size.height * 0.2,
           width: double.infinity,

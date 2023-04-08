@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/screens/news_feed/widgets/lost_device_field_item.dart';
+import 'package:my_device/screens/news_feed/widgets/mark_as_found.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
-import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/services/models/device/device_model.dart';
-import 'package:my_device/services/providers/device_owner/device_owner_provider.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
-import 'package:my_device/shared/utils/app_extensions.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';
 import 'package:my_device/shared/utils/app_screen_utils.dart';
 import 'package:my_device/shared/utils/type_defs.dart';
@@ -77,7 +75,10 @@ class OwnerDetailsForLostDevices extends ConsumerWidget {
                   width: double.infinity,
                   height: 45.0.h,
                   child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MarkAsFound(theDevice: theDevice))),
                       child: const AppTextWidget(
                           theText: AppTexts.markAsFound, textType: null))))
         ]));

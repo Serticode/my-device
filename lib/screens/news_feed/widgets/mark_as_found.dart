@@ -4,8 +4,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_device/screens/home/home_wrapper.dart';
 import 'package:my_device/screens/widgets/animated_button.dart';
 import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
+import 'package:my_device/services/models/device/device_model.dart';
+import 'package:my_device/services/models/device/found_device_model.dart';
 import 'package:my_device/services/providers/user_devices_controller/user_devices_controller_provider.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
@@ -17,19 +20,17 @@ import 'package:my_device/shared/utils/utils.dart';
 import 'package:my_device/theme/app_theme.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-ValueNotifier<List<File>>? _devicePictures = ValueNotifier([]);
+ValueNotifier<List<File>>? _securityPersonnelImage = ValueNotifier([]);
 List<String> devicePictureNames = [
-  "Full picture",
-  "Full picture - different angle",
-  "Serial number",
-  "Model number"
+  "Security personnel picture",
 ];
-ValueNotifier<List<bool>> _isDevicePictureAdded =
+ValueNotifier<List<bool>> _arePicturesAdded =
     ValueNotifier([false, false, false, false]);
 ValueNotifier<int> _currentSelectedIndex = ValueNotifier(0);
 
 class MarkAsFound extends ConsumerStatefulWidget {
-  const MarkAsFound({super.key});
+  final DeviceModel theDevice;
+  const MarkAsFound({super.key, required this.theDevice});
 
   @override
   ConsumerState<MarkAsFound> createState() => _MarkAsFoundState();
@@ -46,6 +47,12 @@ class _MarkAsFoundState extends ConsumerState<MarkAsFound> {
       ValueNotifier(TextEditingController());
   final ValueNotifier<TextEditingController> deviceNameController =
       ValueNotifier(TextEditingController());
+  final ValueNotifier<TextEditingController> deviceTypeController =
+      ValueNotifier(TextEditingController());
+  final ValueNotifier<TextEditingController> securityPersonnelNameController =
+      ValueNotifier(TextEditingController());
+  final ValueNotifier<TextEditingController> securityPersonnelIDController =
+      ValueNotifier(TextEditingController());
 
   ValueNotifier<bool> isDeviceTypeTapped = ValueNotifier(false);
   ValueNotifier<DeviceType> selectedDeviceType =
@@ -59,14 +66,26 @@ class _MarkAsFoundState extends ConsumerState<MarkAsFound> {
       isDeviceTypeTapped.value = !isDeviceTypeTapped.value;
 
   @override
+  void initState() {
+    super.initState();
+    serialNumberController.value.text = widget.theDevice.serialNumber!;
+    modelNumberController.value.text = widget.theDevice.modelNumber!;
+    colourController.value.text = widget.theDevice.deviceColour!;
+    brandController.value.text = widget.theDevice.brand!;
+    deviceNameController.value.text = widget.theDevice.deviceName!;
+    deviceTypeController.value.text = widget.theDevice.deviceType!;
+  }
+
+  @override
   void dispose() {
     serialNumberController.dispose();
     modelNumberController.dispose();
     colourController.dispose();
     brandController.dispose();
     deviceNameController.dispose();
-    _devicePictures?.value = [];
-    _isDevicePictureAdded.value = [false, false, false, false];
+    deviceTypeController.dispose();
+    _securityPersonnelImage?.value = [];
+    _arePicturesAdded.value = [false, false, false, false];
     _currentSelectedIndex.value = 0;
     super.dispose();
   }
@@ -79,7 +98,7 @@ class _MarkAsFoundState extends ConsumerState<MarkAsFound> {
             elevation: 0.0.h,
             shadowColor: Colors.transparent,
             title: const AppTextWidget(
-                theText: "Add Device", textType: AppTextType.boldBody)),
+                theText: "Mark as found", textType: AppTextType.boldBody)),
 
         //! CONTENT
         body: SafeArea(
@@ -109,14 +128,13 @@ class _MarkAsFoundState extends ConsumerState<MarkAsFound> {
                       SizedBox(
                           width: double.infinity,
                           child: ValueListenableBuilder(
-                              valueListenable: _isDevicePictureAdded,
+                              valueListenable: _arePicturesAdded,
                               builder: (context, value, child) => Column(
                                     children: devicePictureNames
                                         .map((name) => Row(children: [
                                               //! ICON
                                               Icon(PhosphorIcons.checks,
-                                                  color: _isDevicePictureAdded
-                                                          .value
+                                                  color: _arePicturesAdded.value
                                                           .elementAt(
                                                               devicePictureNames
                                                                   .indexOf(
@@ -141,261 +159,121 @@ class _MarkAsFoundState extends ConsumerState<MarkAsFound> {
                       const AppFadeAnimation(
                           delay: 1.6,
                           child: AppTextWidget(
-                              theText: "Add device details",
+                              theText:
+                                  "The device details are already filled and shown below, Kindly provide the security personnel details in the provided box",
                               textType: AppTextType.regularBody)),
 
                       //! SPACER
-                      AppScreenUtils.verticalSpaceTiny,
+                      AppScreenUtils.verticalSpaceSmall,
 
-                      //! MODEL NUMBER
+                      //! SECURITY PERSONNEL NAME
                       TextFormField(
                           style: Theme.of(context).textTheme.bodyMedium,
                           cursorColor: AppColours.lettersAndIconsColour,
-                          controller: modelNumberController.value,
+                          controller: securityPersonnelNameController.value,
                           decoration: const InputDecoration(
-                              hintText: AppTexts.modelNumber)),
+                              hintText: AppTexts.securityPersonnelName)),
 
                       //! SPACER
                       AppScreenUtils.verticalSpaceTiny,
 
-                      //! SERIAL NUMBER
+                      //! SECURITY PERSONNEL NUMBER
                       TextFormField(
                           style: Theme.of(context).textTheme.bodyMedium,
                           cursorColor: AppColours.lettersAndIconsColour,
-                          controller: serialNumberController.value,
+                          controller: securityPersonnelIDController.value,
                           decoration: const InputDecoration(
-                              hintText: AppTexts.serialNumber)),
+                              hintText: AppTexts.securityPersonnelStaffID)),
 
                       //! SPACER
                       AppScreenUtils.verticalSpaceTiny,
 
-                      //! DEVICE COLOUR
-                      TextFormField(
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          cursorColor: AppColours.lettersAndIconsColour,
-                          controller: colourController.value,
-                          decoration:
-                              const InputDecoration(hintText: AppTexts.colour)),
+                      Row(children: [
+                        //! MODEL NUMBER
+                        Expanded(
+                            child: TextFormField(
+                                enabled: false,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                cursorColor: AppColours.lettersAndIconsColour,
+                                decoration: InputDecoration(
+                                    hintMaxLines: 2,
+                                    hintText:
+                                        "${AppTexts.modelNumber}: ${modelNumberController.value.text} "))),
+
+                        //! SPACER
+                        AppScreenUtils.horizontalSpaceTiny,
+
+                        //! SERIAL NUMBER
+                        Expanded(
+                            child: TextFormField(
+                                enabled: false,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                cursorColor: AppColours.lettersAndIconsColour,
+                                decoration: InputDecoration(
+                                    hintMaxLines: 2,
+                                    hintText:
+                                        "${AppTexts.serialNumber}: ${serialNumberController.value.text} ")))
+                      ]),
 
                       //! SPACER
                       AppScreenUtils.verticalSpaceTiny,
 
-                      //! BRAND
-                      TextFormField(
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          cursorColor: AppColours.lettersAndIconsColour,
-                          controller: brandController.value,
-                          decoration: const InputDecoration(
-                              hintText: AppTexts.deviceBrand)),
+                      Row(children: [
+                        //! DEVICE COLOUR
+                        Expanded(
+                            child: TextFormField(
+                                enabled: false,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                cursorColor: AppColours.lettersAndIconsColour,
+                                decoration: InputDecoration(
+                                    hintMaxLines: 2,
+                                    hintText:
+                                        "${AppTexts.colour}: ${colourController.value.text} "))),
+
+                        //! SPACER
+                        AppScreenUtils.horizontalSpaceTiny,
+
+                        //! BRAND
+                        Expanded(
+                            child: TextFormField(
+                                enabled: false,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                cursorColor: AppColours.lettersAndIconsColour,
+                                decoration: InputDecoration(
+                                    hintMaxLines: 2,
+                                    hintText:
+                                        "${AppTexts.deviceBrand}: ${brandController.value.text} ")))
+                      ]),
 
                       //! SPACER
                       AppScreenUtils.verticalSpaceTiny,
 
-                      //! DEVICE NAME
-                      TextFormField(
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          cursorColor: AppColours.lettersAndIconsColour,
-                          controller: deviceNameController.value,
-                          decoration: const InputDecoration(
-                              hintText: AppTexts.deviceName)),
+                      Row(children: [
+                        //! DEVICE NAME
+                        Expanded(
+                            child: TextFormField(
+                                enabled: false,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                cursorColor: AppColours.lettersAndIconsColour,
+                                decoration: InputDecoration(
+                                    hintMaxLines: 2,
+                                    hintText:
+                                        "${AppTexts.deviceName}: ${deviceNameController.value.text} "))),
 
-                      //! SPACER
-                      AppScreenUtils.verticalSpaceTiny,
+                        //! SPACER
+                        AppScreenUtils.horizontalSpaceTiny,
 
-                      //! SELECT DEVICE TYPE
-                      AppMultiListenableProvider(
-                          firstValue: isDeviceTypeTapped,
-                          secondValue: isDeviceTypeSelected,
-                          child: const SizedBox.shrink(),
-                          builder: (context, firstValue, secondValue, child) {
-                            return AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                height: firstValue ? 300.0.h : 65.0.h,
-                                width: double.infinity,
-                                padding: AppScreenUtils.defaultPadding,
-                                decoration: BoxDecoration(
-                                    color: AppColours.lettersAndIconsFaintColour
-                                        .withOpacity(0.3),
-                                    borderRadius:
-                                        BorderRadius.circular(21.0.r)),
-                                child:
-                                    //! DEVICE TYPE SELECTED
-                                    secondValue
-                                        ? Row(children: [
-                                            //! DEVICE TYPE IMAGE
-                                            Container(
-                                                height: 40.0.h,
-                                                width: 40.0.w,
-                                                decoration: BoxDecoration(
-                                                  color: AppColours.appGreyFaint
-                                                      .withOpacity(0.2),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0.r),
-                                                  border: Border.all(
-                                                      width: 1.2,
-                                                      color: AppColours
-                                                          .appGreyFaint),
-                                                ),
-                                                child: Transform.scale(
-                                                    scale: 0.7,
-                                                    child: AppUtils.getDeviceIcons(
-                                                        index: deviceTypes.value
-                                                            .indexOf(
-                                                                selectedDeviceType
-                                                                    .value)))),
-
-                                            //! SPACER
-                                            AppScreenUtils.horizontalSpaceSmall,
-
-                                            //! SELECTED DEVICE TYPE NAME
-                                            AppTextWidget(
-                                                theText: selectedDeviceType
-                                                    .value.name,
-                                                textType:
-                                                    AppTextType.regularBody),
-
-                                            //! SPACER
-                                            const Spacer(),
-
-                                            IconButton(
-                                                onPressed: () {
-                                                  isDeviceTypeTapped.value =
-                                                      false;
-                                                  isDeviceTypeSelected.value =
-                                                      false;
-
-                                                  selectedDeviceType.value =
-                                                      DeviceType.smartPhone;
-                                                },
-                                                icon: Icon(
-                                                  Icons.close,
-                                                  size: 22.sp,
-                                                  color: AppColours
-                                                      .lettersAndIconsFaintColour
-                                                      .withOpacity(0.5),
-                                                ))
-                                          ])
-                                        :
-
-                                        //! DEVICE TYPE HAS NOT BEEN SELECTED
-                                        !firstValue
-                                            ?
-                                            //! USER HAS NOT TAPPED ON SELECT DEVICE TYPE
-                                            Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                    //! HEART
-                                                    Icon(
-                                                      PhosphorIcons
-                                                          .deviceMobileBold,
-                                                      size: 18.sp,
-                                                      color: AppColours
-                                                          .lettersAndIconsFaintColour
-                                                          .withOpacity(0.5),
-                                                    ),
-
-                                                    //! SPACER
-                                                    AppScreenUtils
-                                                        .horizontalSpaceSmall,
-
-                                                    InkWell(
-                                                        onTap: () =>
-                                                            isDeviceTypeTapped
-                                                                    .value =
-                                                                !isDeviceTypeTapped
-                                                                    .value,
-                                                        child: AppTextWidget(
-                                                            theText:
-                                                                "Select a Device Type",
-                                                            textColour: AppColours
-                                                                .lettersAndIconsFaintColour
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            textType: AppTextType
-                                                                .regularBody)),
-
-                                                    //! SPACER
-                                                    AppScreenUtils
-                                                        .horizontalSpaceMedium,
-
-                                                    //! ICON
-                                                    Icon(
-                                                      Icons
-                                                          .keyboard_arrow_down_outlined,
-                                                      color: AppColours
-                                                          .lettersAndIconsFaintColour
-                                                          .withOpacity(0.5),
-                                                    )
-                                                  ])
-                                            :
-
-                                            //! DEVICE TYPES
-                                            ValueListenableBuilder(
-                                                valueListenable: deviceTypes,
-                                                builder:
-                                                    (context, value, child) {
-                                                  return Stack(children: [
-                                                    SingleChildScrollView(
-                                                        physics:
-                                                            const BouncingScrollPhysics(),
-                                                        child: Column(
-                                                            children: [
-                                                              ...deviceTypes
-                                                                  .value
-                                                                  .map((deviceType) => InkWell(
-                                                                      onTap: () {
-                                                                        selectedDeviceType.value =
-                                                                            deviceType;
-
-                                                                        isDeviceTypeTapped.value =
-                                                                            !isDeviceTypeTapped.value;
-
-                                                                        isDeviceTypeSelected.value =
-                                                                            !isDeviceTypeSelected.value;
-                                                                      },
-                                                                      child: Container(
-                                                                          height: 55.h,
-                                                                          margin: EdgeInsets.only(bottom: 5.h),
-                                                                          child: Row(children: [
-                                                                            Container(
-                                                                              height: 50.0.h,
-                                                                              width: 55.0.w,
-                                                                              decoration: BoxDecoration(
-                                                                                color: AppColours.appGreyFaint.withOpacity(0.2),
-                                                                                borderRadius: BorderRadius.circular(12.0.r),
-                                                                                border: Border.all(width: 1.2, color: AppColours.appGreyFaint),
-                                                                              ),
-                                                                              child: AppUtils.getDeviceIcons(
-                                                                                index: deviceTypes.value.indexOf(deviceType),
-                                                                              ),
-                                                                            ),
-
-                                                                            //! SPACER
-                                                                            AppScreenUtils.horizontalSpaceSmall,
-
-                                                                            AppTextWidget(
-                                                                                theText: deviceType.name,
-                                                                                textType: AppTextType.regularBody)
-                                                                          ]))))
-                                                                  .toList()
-                                                            ])),
-
-                                                    //! CLOSE BUTTON
-                                                    Positioned(
-                                                        right: 0,
-                                                        child: IconButton(
-                                                            onPressed:
-                                                                toggleSelectDeviceType,
-                                                            icon: Icon(
-                                                                Icons.close,
-                                                                size: 22.sp,
-                                                                color: AppColours
-                                                                    .appBlue)))
-                                                  ]);
-                                                }));
-                          }),
+                        //! DEVICE TYPE
+                        Expanded(
+                            child: TextFormField(
+                                enabled: false,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                cursorColor: AppColours.lettersAndIconsColour,
+                                decoration: InputDecoration(
+                                    hintMaxLines: 2,
+                                    hintText:
+                                        "${AppTexts.deviceType}: ${deviceTypeController.value.text} ")))
+                      ]),
 
                       //! SPACER
                       AppScreenUtils.verticalSpaceTiny,
@@ -429,55 +307,46 @@ class _MarkAsFoundState extends ConsumerState<MarkAsFound> {
                                                                 .appWhite))
                                                 : const AppTextWidget(
                                                     theText:
-                                                        AppTexts.saveDevice,
+                                                        AppTexts.markAsFound,
                                                     textType: AppTextType
                                                         .regularBody)),
                                         onTap: () async {
-                                          if (deviceNameController
+                                          if (securityPersonnelIDController
                                                   .value.text.isNotEmpty &&
-                                              serialNumberController
+                                              securityPersonnelNameController
                                                   .value.text.isNotEmpty &&
-                                              modelNumberController
-                                                  .value.text.isNotEmpty &&
-                                              brandController
-                                                  .value.text.isNotEmpty &&
-                                              colourController
-                                                  .value.text.isNotEmpty &&
-                                              _devicePictures!.value.length ==
-                                                  4) {
+                                              _securityPersonnelImage!
+                                                  .value.isNotEmpty) {
+                                            final FoundDeviceModel foundDevice =
+                                                FoundDeviceModel(
+                                                    createdAt: DateTime.now(),
+                                                    device: widget.theDevice,
+                                                    securityPersonnelID:
+                                                        securityPersonnelIDController
+                                                            .value.text,
+                                                    securityPersonnelName:
+                                                        securityPersonnelNameController
+                                                            .value.text,
+                                                    securityPersonnelImage:
+                                                        _securityPersonnelImage!
+                                                            .value);
                                             await ref
                                                 .read(deviceControllerProvider
                                                     .notifier)
-                                                .saveDevice(
-                                                    createdAt: DateTime.now(),
-                                                    deviceName:
-                                                        deviceNameController
-                                                            .value.text
-                                                            .trim(),
-                                                    deviceType: selectedDeviceType
-                                                        .value.name,
-                                                    serialNumber:
-                                                        serialNumberController
-                                                            .value.text
-                                                            .trim(),
-                                                    modelNumber:
-                                                        modelNumberController
-                                                            .value.text
-                                                            .trim(),
-                                                    brand: brandController
-                                                        .value.text
-                                                        .trim(),
-                                                    deviceColour:
-                                                        colourController
-                                                            .value.text
-                                                            .trim(),
-                                                    deviceImages:
-                                                        _devicePictures!.value)
+                                                .markAsFound(
+                                                    device: foundDevice)
                                                 .then((value) async => value
                                                         .isRight()
                                                     ? {
                                                         await clearControllers(),
-                                                        Navigator.pop(context)
+                                                        Navigator.of(context)
+                                                            .pushAndRemoveUntil(
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            const HomeWrapper()),
+                                                                (route) =>
+                                                                    false)
                                                       }
                                                     : "Add Device failed".log())
                                                 // ignore: body_might_complete_normally_catch_error
@@ -529,7 +398,7 @@ class DeviceDetail extends ConsumerWidget {
           AppTextWidget(theText: "$label :", textType: AppTextType.regularBody),
 
           //! SPACER
-          AppScreenUtils.horizontalSpaceSmall,
+          AppScreenUtils.horizontalSpaceTiny,
 
           AppTextWidget(theText: value, textType: AppTextType.regularBody)
         ]));
@@ -554,7 +423,7 @@ class MarkAsFoundImage extends ConsumerWidget {
         child: Stack(children: [
           //! BOTTOM
           ValueListenableBuilder(
-              valueListenable: _devicePictures!,
+              valueListenable: _securityPersonnelImage!,
               builder: (context, value, child) => CarouselSlider(
                   options: CarouselOptions(
                       height: MediaQuery.of(context).size.height * 0.3,
@@ -570,12 +439,12 @@ class MarkAsFoundImage extends ConsumerWidget {
                       enlargeCenterPage: true,
                       enlargeFactor: 0.5,
                       scrollDirection: Axis.horizontal),
-                  items: _devicePictures!.value.isEmpty
+                  items: _securityPersonnelImage!.value.isEmpty
                       ? List.generate(
-                          4,
+                          1,
                           (index) => Center(
                               child: Text(devicePictureNames.elementAt(index))))
-                      : _devicePictures!.value.map((image) {
+                      : _securityPersonnelImage!.value.map((image) {
                           return Container(
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
@@ -587,7 +456,7 @@ class MarkAsFoundImage extends ConsumerWidget {
                               child: Center(
                                   child: Text(
                                       devicePictureNames.elementAt(
-                                          _devicePictures!.value
+                                          _securityPersonnelImage!.value
                                               .indexOf(image)),
                                       style: Theme.of(context)
                                           .textTheme
@@ -603,15 +472,15 @@ class MarkAsFoundImage extends ConsumerWidget {
                   mini: true,
                   heroTag: "Delete FAB",
                   onPressed: () async {
-                    if (_devicePictures!.value.isNotEmpty) {
+                    if (_securityPersonnelImage!.value.isNotEmpty) {
                       --_currentSelectedIndex.value;
-                      _devicePictures!.value
+                      _securityPersonnelImage!.value
                           .removeAt(_currentSelectedIndex.value);
-                      _isDevicePictureAdded.value[_currentSelectedIndex.value] =
+                      _arePicturesAdded.value[_currentSelectedIndex.value] =
                           false;
 
-                      _isDevicePictureAdded.notifyListeners();
-                      _devicePictures!.notifyListeners();
+                      _arePicturesAdded.notifyListeners();
+                      _securityPersonnelImage!.notifyListeners();
                     } else {
                       AppUtils.showBanner(
                           context: context,
@@ -630,18 +499,18 @@ class MarkAsFoundImage extends ConsumerWidget {
               child: FloatingActionButton(
                   mini: true,
                   onPressed: () async {
-                    if (_devicePictures!.value.length < 4) {
+                    if (_securityPersonnelImage!.value.isEmpty) {
                       await AppUtils.pickImage().then((devicePicture) {
                         if (devicePicture == null) {
                           return;
                         } else {
-                          _devicePictures!.value.add(devicePicture);
-                          _isDevicePictureAdded
-                              .value[_currentSelectedIndex.value] = true;
+                          _securityPersonnelImage!.value.add(devicePicture);
+                          _arePicturesAdded.value[_currentSelectedIndex.value] =
+                              true;
                           _currentSelectedIndex.value++;
 
-                          _isDevicePictureAdded.notifyListeners();
-                          _devicePictures!.notifyListeners();
+                          _arePicturesAdded.notifyListeners();
+                          _securityPersonnelImage!.notifyListeners();
                         }
                       }).catchError((error) => error.log());
                     } else {

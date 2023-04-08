@@ -1,3 +1,5 @@
+import 'package:my_device/screens/news_feed/widgets/mark_as_found.dart';
+
 abstract class AppTexts {
   const AppTexts._();
   // app name
@@ -52,9 +54,12 @@ abstract class AppTexts {
   static const delete = "Delete";
   static const deletedDevices = "Deleted devices";
   static const modelNumber = "Model number";
+  static const securityPersonnelStaffID = "Security personnel staff ID";
+  static const securityPersonnelName = "Security personnel name";
   static const serialNumber = "Serial number";
   static const colour = "Device colour";
   static const deviceBrand = "Device brand";
+  static const deviceType = "Device Type";
   static const deviceName = "Device name";
   static const saveDevice = "Save device";
   static const markAsLost = "Mark as lost";

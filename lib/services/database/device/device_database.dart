@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_device/services/models/device/device_model.dart';
+import 'package:my_device/services/models/device/found_device_model.dart';
 import 'package:my_device/services/models/firebase/firebase_collection_names.dart';
 import 'package:my_device/services/models/firebase/firebase_device_field_name.dart';
 import 'package:my_device/shared/utils/app_extensions.dart';
@@ -16,6 +17,9 @@ class DeviceDatabase {
       .collection(FirebaseCollectionName.deletedDevices);
   static final CollectionReference lostDevicesCollection =
       FirebaseFirestore.instance.collection(FirebaseCollectionName.lostDevices);
+  static final CollectionReference foundDevicesCollection = FirebaseFirestore
+      .instance
+      .collection(FirebaseCollectionName.foundDevices);
 
   //! SAVE DEVICE INFO
   Future<bool> saveDeviceInfo(
@@ -97,6 +101,62 @@ class DeviceDatabase {
       return true;
     } catch (error) {
       error.log();
+      return false;
+    }
+  }
+
+  //! MARK AS FOUND
+  Future<bool> markAsFound(
+      {required UserId userId, required FoundDeviceModel foundDevice}) async {
+    try {
+      foundDevice.device!.update("isLost", (value) => value = false);
+
+      //! PLACE HOLDER
+      List<String> securityPersonnelImageUrls = [];
+
+      final Reference foundDeviceImageRef = FirebaseStorage.instance
+          .ref()
+          .child(FirebaseCollectionName.foundDevices)
+          .child(foundDevice.device!.ownerId!)
+          .child(foundDevice.device!.deviceName!)
+          .child(foundDevice.device!.serialNumber!)
+          .child(FirebaseCollectionName.securityPersonnelImages);
+
+      for (var element in foundDevice.securityPersonnelImage!) {
+        await foundDeviceImageRef
+            .child(element.path.split("/").last)
+            .putFile(element)
+            .then((snapshot) async => securityPersonnelImageUrls
+                .add(await snapshot.ref.getDownloadURL()))
+            .catchError((error) {
+          error.toString().log();
+        });
+      }
+
+      foundDevice.update("securityPersonnelImage",
+          (value) => value = securityPersonnelImageUrls);
+
+      await foundDevicesCollection.add(foundDevice);
+
+      await FirebaseFirestore.instance.runTransaction(
+          maxAttempts: 3,
+          timeout: const Duration(seconds: 30), (transaction) async {
+        final QuerySnapshot<Object?> query = await lostDevicesCollection
+            .where(FirebaseDeviceFieldName.serialNumber,
+                isEqualTo: foundDevice.device!.serialNumber)
+            .get();
+        for (final doc in query.docs) {
+          transaction.delete(doc.reference);
+        }
+      }).catchError((error) {
+        error.toString().log();
+      }).then((value) {
+        value?.toString().log();
+      });
+
+      return true;
+    } catch (error) {
+      error.toString().log();
       return false;
     }
   }

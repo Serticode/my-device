@@ -193,4 +193,20 @@ class AppUtils {
         return "Smartphone";
     }
   }
+
+  static DeviceType getDeviceTypeFromName({required String deviceTypeName}) {
+    late DeviceType deviceType;
+
+    List<String> placeHolder = deviceTypeName.toLowerCase().split(" ");
+
+    for (DeviceType element in DeviceType.values) {
+      placeHolder.contains(element.name.toLowerCase())
+          ? deviceType = element
+          : {};
+    }
+
+    "Device Type: $deviceType".log();
+
+    return deviceType;
+  }
 }

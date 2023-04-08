@@ -5,6 +5,7 @@ class FirebaseDeviceFieldName {
   static const String ownerId = "ownerId";
   static const String createdAt = "createdAt";
   static const String date = "date";
+  static const String device = "device";
   static const String deviceName = "deviceName";
   static const String deviceType = "deviceType";
   static const String serialNumber = "serialNumber";
@@ -13,5 +14,8 @@ class FirebaseDeviceFieldName {
   static const String isLost = "isLost";
   static const String deviceColour = "deviceColour";
   static const String deviceImages = "deviceImages";
+  static const String securityPersonnelName = "securityPersonnelName";
+  static const String securityPersonnelID = "securityPersonnelID";
+  static const String securityPersonnelImage = "securityPersonnelImage";
   const FirebaseDeviceFieldName._();
 }
