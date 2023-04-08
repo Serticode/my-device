@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_device/router/router.dart';
 import 'package:my_device/router/routes.dart';
+import 'package:my_device/screens/home/home_wrapper.dart';
 import 'package:my_device/screens/profile/widgets/about.dart';
 import 'package:my_device/screens/profile/widgets/profile_item.dart';
 import 'package:my_device/screens/profile/widgets/report_a_problem.dart';

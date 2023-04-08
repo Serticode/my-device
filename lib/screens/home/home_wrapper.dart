@@ -6,6 +6,7 @@ import 'package:my_device/router/routes.dart';
 import 'package:my_device/screens/home/widgets/app_bar.dart';
 import 'package:my_device/screens/home/widgets/home_screen.dart';
 import 'package:my_device/screens/news_feed/news_feed.dart';
+import 'package:my_device/screens/notification/notifications_screen.dart';
 import 'package:my_device/screens/profile/profile.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
 import 'package:my_device/services/models/auth/user_model/user_model.dart';
@@ -19,9 +20,10 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 class HomeWrapper extends ConsumerWidget {
   const HomeWrapper({super.key});
   //! PAGE INDEX
-  static final ValueNotifier<int> currentPageIndex = ValueNotifier(0);
   //! LIST OF PAGES
   static const List<Widget> listOfPages = [HomeScreen(), NewsFeed(), Profile()];
+  static final ValueNotifier<int> homeWrapperCurrentPageIndex =
+      ValueNotifier(0);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,24 +31,25 @@ class HomeWrapper extends ConsumerWidget {
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(75.0.h),
             child: ValueListenableBuilder(
-                valueListenable: currentPageIndex,
+                valueListenable: homeWrapperCurrentPageIndex,
                 child: const SizedBox.shrink(),
                 builder: (context, value, child) => AppBarWidget(
-                    onTap: () => "App Bar onTap".log(),
-                    currentPage: currentPageIndex.value))),
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const NotificationsScreen())),
+                    currentPage: homeWrapperCurrentPageIndex.value))),
 
         //! BODY
         body: SafeArea(
             child: ValueListenableBuilder(
-                valueListenable: currentPageIndex,
+                valueListenable: homeWrapperCurrentPageIndex,
                 child: const SizedBox.shrink(),
                 builder: (context, value, child) =>
-                    listOfPages.elementAt(currentPageIndex.value))),
+                    listOfPages.elementAt(homeWrapperCurrentPageIndex.value))),
 
         //! FLOATING ACTION BUTTON
         floatingActionButton: ValueListenableBuilder(
-            valueListenable: currentPageIndex,
-            builder: (context, value, child) => currentPageIndex.value != 0
+            valueListenable: homeWrapperCurrentPageIndex,
+            builder: (context, value, child) => homeWrapperCurrentPageIndex.value != 0
                 ? const SizedBox.shrink()
                 : FloatingActionButton(
                     onPressed: () => AppNavigator.navigateToPage(
@@ -59,7 +62,7 @@ class HomeWrapper extends ConsumerWidget {
 
         //! BOTTOM NAVIGATION BAR
         bottomNavigationBar: ValueListenableBuilder(
-            valueListenable: currentPageIndex,
+            valueListenable: homeWrapperCurrentPageIndex,
             builder: (context, value, child) => BottomNavigationBar(
                     backgroundColor: Colors.transparent,
                     elevation: 0.0.h,
@@ -69,8 +72,8 @@ class HomeWrapper extends ConsumerWidget {
                     enableFeedback: true,
 
                     //! CHANGE CURRENT INDEX FOR BOTTOM NAV BAR
-                    onTap: (value) => currentPageIndex.value = value,
-                    currentIndex: currentPageIndex.value,
+                    onTap: (value) => homeWrapperCurrentPageIndex.value = value,
+                    currentIndex: homeWrapperCurrentPageIndex.value,
 
                     //! ITEMS
                     items: [

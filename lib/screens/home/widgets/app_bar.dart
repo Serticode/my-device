@@ -5,7 +5,6 @@ import 'package:my_device/screens/widgets/app_custom_text_widget.dart';
 import 'package:my_device/screens/widgets/profile_picture.dart';
 import 'package:my_device/services/models/auth/user_model/user_model.dart';
 import 'package:my_device/services/providers/auth_state/auth_state_provider.dart';
-import 'package:my_device/services/providers/upload_image/upload_image_provider.dart';
 import 'package:my_device/services/providers/user_info/user_info_provider.dart';
 import 'package:my_device/shared/constants/app_texts.dart';
 import 'package:my_device/shared/utils/app_fade_animation.dart';

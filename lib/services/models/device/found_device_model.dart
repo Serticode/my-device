@@ -10,6 +10,7 @@ class FoundDeviceModel extends MapView<String, dynamic> {
   late String? securityPersonnelID;
   late List? securityPersonnelImage;
   late DateTime? createdAt;
+  late String? ownerID;
 
   //! CONSTRUCTOR
   FoundDeviceModel(
@@ -17,14 +18,16 @@ class FoundDeviceModel extends MapView<String, dynamic> {
       this.securityPersonnelName,
       this.securityPersonnelID,
       this.securityPersonnelImage,
-      this.createdAt})
+      this.createdAt,
+      this.ownerID})
       : super({
           FirebaseDeviceFieldName.device: device,
           FirebaseDeviceFieldName.securityPersonnelName: securityPersonnelName,
           FirebaseDeviceFieldName.securityPersonnelID: securityPersonnelID,
           FirebaseDeviceFieldName.securityPersonnelImage:
               securityPersonnelImage,
-          FirebaseDeviceFieldName.createdAt: createdAt
+          FirebaseDeviceFieldName.createdAt: createdAt,
+          FirebaseDeviceFieldName.ownerId: ownerID
         });
 
   //! FROM JSON
@@ -39,6 +42,7 @@ class FoundDeviceModel extends MapView<String, dynamic> {
               json[FirebaseDeviceFieldName.securityPersonnelID] ?? "",
           securityPersonnelImage:
               json[FirebaseDeviceFieldName.securityPersonnelImage] ?? [],
+          ownerID: json[FirebaseDeviceFieldName.ownerId] ?? "",
           createdAt:
               (json[FirebaseDeviceFieldName.createdAt] as Timestamp).toDate(),
         );
@@ -52,6 +56,7 @@ class FoundDeviceModel extends MapView<String, dynamic> {
           securityPersonnelName == other.securityPersonnelName &&
           securityPersonnelID == other.securityPersonnelID &&
           securityPersonnelImage == other.securityPersonnelImage &&
+          ownerID == other.ownerID &&
           createdAt == other.createdAt;
 
   @override
@@ -60,6 +65,7 @@ class FoundDeviceModel extends MapView<String, dynamic> {
         securityPersonnelName,
         securityPersonnelID,
         securityPersonnelImage,
-        createdAt
+        createdAt,
+        ownerID
       ]);
 }

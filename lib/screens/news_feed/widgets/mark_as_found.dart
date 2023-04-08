@@ -329,7 +329,9 @@ class _MarkAsFoundState extends ConsumerState<MarkAsFound> {
                                                             .value.text,
                                                     securityPersonnelImage:
                                                         _securityPersonnelImage!
-                                                            .value);
+                                                            .value,
+                                                    ownerID: widget
+                                                        .theDevice.ownerId);
                                             await ref
                                                 .read(deviceControllerProvider
                                                     .notifier)
@@ -349,7 +351,6 @@ class _MarkAsFoundState extends ConsumerState<MarkAsFound> {
                                                                     false)
                                                       }
                                                     : "Add Device failed".log())
-                                                // ignore: body_might_complete_normally_catch_error
                                                 .catchError((error) {
                                               error.toString.log();
                                             });
